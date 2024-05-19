@@ -3,12 +3,13 @@ package com.example.schoolmanagement.model;
 public class StudentDto {
     private Long id;
     private String name;
-    private Double score;
+    private String surname;
 
-    public StudentDto(Long id, String name, Double score) {
+
+    public StudentDto(Long id, String name, String surname) {
         this.id = id;
         this.name = name;
-        this.score = score;
+        this.surname = surname;
     }
 
     public StudentDto() {
@@ -30,12 +31,12 @@ public class StudentDto {
         this.name = name;
     }
 
-    public Double getScore() {
-        return score;
+    public String getScore() {
+        return surname;
     }
 
-    public void setScore(Double score) {
-        this.score = score;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class StudentDto {
         return "StudentDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", score=" + score +
+                ", surname=" + surname +
                 '}';
     }
 }

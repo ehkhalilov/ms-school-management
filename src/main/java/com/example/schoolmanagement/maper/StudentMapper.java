@@ -10,9 +10,9 @@ public class StudentMapper {
     public StudentDto mapToDto(StudentEntity studentEntity) {
         StudentDto studentDto = new StudentDto();
 
-        studentDto.setId(studentEntity.getId());
+        studentDto.setId(studentEntity.getStudentid());
         studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
-        studentDto.setScore(studentEntity.getScore());
+
 
         return studentDto;
     }

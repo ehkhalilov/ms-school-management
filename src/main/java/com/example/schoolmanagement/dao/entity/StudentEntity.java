@@ -12,33 +12,26 @@ import java.time.LocalDate;
 @Table(name = "students")
 public class StudentEntity {
     @Id
-    private Long id;
+    private Long studentid;
     private String name;
     private String surname;
-    private Double score;
-    @Column(name = "birth_date")
-    @Transient
-    private LocalDate birthDate;
-    private Integer course;
 
     public StudentEntity() {
     }
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course) {
-        this.id = id;
+    public StudentEntity(Long studentid, String name, String surname, Double score, LocalDate birthDate, Integer course) {
+        this.studentid = studentid;
         this.name = name;
         this.surname = surname;
-        this.score = score;
-        this.birthDate = birthDate;
-        this.course = course;
+
     }
 
-    public Long getId() {
-        return id;
+    public Long getStudentid() {
+        return studentid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStudentid(Long studentid) {
+        this.studentid = studentid;
     }
 
     public String getName() {
@@ -57,27 +50,4 @@ public class StudentEntity {
         this.surname = surname;
     }
 
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Integer getCourse() {
-        return course;
-    }
-
-    public void setCourse(Integer course) {
-        this.course = course;
-    }
 }
