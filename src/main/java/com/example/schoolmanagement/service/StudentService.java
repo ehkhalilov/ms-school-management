@@ -35,15 +35,15 @@ public class StudentService {
     }
 
     public void saveStudent(StudentDto studentDto) {
+        StudentEntity studentEntity = studentMapper.mapToEntity(studentDto);
+        studentRepository.save(studentEntity);
+    }
+
+    public void deleteStudent(Long customerId) {
 
     }
 
-    public void deleteStudent(Integer customerId) {
+    public void updateStudent(StudentDto studentDto, Long customerId) {
 
     }
-
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
-    }
-
-
 }
