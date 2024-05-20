@@ -46,6 +46,14 @@ public class StudentService {
     }
 
     public void updateStudent(StudentDto studentDto, Long customerId) {
+        StudentEntity existingStudent = studentRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
 
+        StudentEntity updatedStudent = studentMapper.mapToEntity(studentDto);
+        existingStudent.setName(updatedStudent.getName());
+        existingStudent.setSurname(updatedStudent.getSurname());
+        existingStudent.setScore(updatedStudent.getScore());
+
+        studentRepository.save(existingStudent);
     }
 }
