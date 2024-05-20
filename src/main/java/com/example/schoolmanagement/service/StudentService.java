@@ -40,7 +40,9 @@ public class StudentService {
     }
 
     public void deleteStudent(Long customerId) {
-
+        StudentEntity studentEntity = studentRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+        studentRepository.delete(studentEntity);
     }
 
     public void updateStudent(StudentDto studentDto, Long customerId) {
