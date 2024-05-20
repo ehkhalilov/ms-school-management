@@ -7,6 +7,7 @@ import com.example.schoolmanagement.model.StudentDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -38,8 +39,8 @@ public class StudentService {
 
     }
 
-    public void deleteStudent(Integer customerId) {
-
+    public void deleteStudent(Long customerId) {
+        studentRepository.deleteById(customerId);
     }
 
     public void updateStudent(StudentDto studentDto, Integer customerId) {
