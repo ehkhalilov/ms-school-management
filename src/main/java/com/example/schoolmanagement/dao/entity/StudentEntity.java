@@ -1,10 +1,6 @@
 package com.example.schoolmanagement.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -12,12 +8,13 @@ import java.time.LocalDate;
 @Table(name = "students")
 public class StudentEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
     private Double score;
     @Column(name = "birth_date")
-    @Transient
+//    @Transient
     private LocalDate birthDate;
     private Integer course;
 
@@ -30,6 +27,14 @@ public class StudentEntity {
         this.surname = surname;
         this.score = score;
         this.birthDate = birthDate;
+        this.course = course;
+    }
+
+    public StudentEntity(String name, String surname, LocalDate birthDate , Double score, Integer course) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.score = score;
         this.course = course;
     }
 
@@ -79,5 +84,17 @@ public class StudentEntity {
 
     public void setCourse(Integer course) {
         this.course = course;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", score=" + score +
+                ", birthDate=" + birthDate +
+                ", course=" + course +
+                '}';
     }
 }

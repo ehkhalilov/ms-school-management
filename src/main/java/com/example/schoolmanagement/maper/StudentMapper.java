@@ -11,8 +11,11 @@ public class StudentMapper {
         StudentDto studentDto = new StudentDto();
 
         studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
+        studentDto.setName(studentEntity.getName());
+        studentDto.setSurname(studentEntity.getSurname());
+        studentDto.setBirthDate(studentEntity.getBirthDate());
         studentDto.setScore(studentEntity.getScore());
+        studentDto.setCourse(studentEntity.getCourse());
 
         return studentDto;
     }
