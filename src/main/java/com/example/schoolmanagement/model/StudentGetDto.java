@@ -1,30 +1,20 @@
-package com.example.schoolmanagement.dao.entity;
-
-import jakarta.persistence.*;
+package com.example.schoolmanagement.model;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "students")
-public class StudentEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class StudentGetDto {
     private Long id;
     private String name;
     private String surname;
-    private String fatherName;
-    @Column(name = "birth_date")
     private LocalDate birthDate;
 
-
-    public StudentEntity() {
+    public StudentGetDto() {
     }
 
-    public StudentEntity(Long id, String name, String surname, String fatherName, LocalDate birthDate) {
+    public StudentGetDto(Long id, String name, String surname, LocalDate birthDate) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.fatherName = fatherName;
         this.birthDate = birthDate;
     }
 
@@ -52,14 +42,6 @@ public class StudentEntity {
         this.surname = surname;
     }
 
-    public String getFatherName() {
-        return fatherName;
-    }
-
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
-
     public LocalDate getBirthDate() {
         return birthDate;
     }
@@ -70,11 +52,10 @@ public class StudentEntity {
 
     @Override
     public String toString() {
-        return "StudentEntity{" +
+        return "StudentGetDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", fatherName='" + fatherName + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
     }

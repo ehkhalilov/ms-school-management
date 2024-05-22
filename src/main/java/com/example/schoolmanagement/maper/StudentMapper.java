@@ -1,19 +1,31 @@
 package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
-import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentGetDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StudentMapper {
 
-    public StudentDto mapToDto(StudentEntity studentEntity) {
-        StudentDto studentDto = new StudentDto();
+    public StudentGetDto mapToDto(StudentEntity studentEntity) {
+        StudentGetDto studentGetDto = new StudentGetDto();
 
-        studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
-        studentDto.setScore(studentEntity.getScore());
+        studentGetDto.setId(studentEntity.getId());
+        studentGetDto.setName(studentEntity.getName());
+        studentGetDto.setSurname(studentEntity.getSurname());
+        studentGetDto.setBirthDate(studentEntity.getBirthDate());
 
-        return studentDto;
+        return studentGetDto;
+    }
+    public StudentEntity mapSaveDtoToEntity(StudentSaveDto studentSaveDto) {
+        StudentEntity studentEntity = new StudentEntity();
+
+        studentEntity.setName(studentSaveDto.getName());
+        studentEntity.setSurname(studentSaveDto.getSurname());
+        studentEntity.setFatherName(studentSaveDto.getFatherName());
+        studentEntity.setBirthDate(studentSaveDto.getBirthDate());
+
+        return studentEntity;
     }
 }

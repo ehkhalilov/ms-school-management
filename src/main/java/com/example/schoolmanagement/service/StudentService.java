@@ -2,8 +2,10 @@ package com.example.schoolmanagement.service;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
+import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.maper.StudentMapper;
-import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentGetDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,23 +20,26 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
-    public List<StudentDto> getAllStudents() {
+    public List<StudentGetDto> getAllStudents() throws NotFoundException{
         List<StudentEntity> studentEntityList = studentRepository.findAll();
-
+        if(studentEntityList.isEmpty()) throw new NotFoundException("Students_NOT_FOUND");
         return studentEntityList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
     }
 
-    public StudentDto getStudent(Long customerId) {
+    public StudentGetDto getStudent(Long studentId) throws NotFoundException{
         var studentEntity = studentRepository
-                .findById(customerId)
-                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+                .findById(studentId)
+                .orElseThrow(() -> new NotFoundException("STUDENT_NOT_FOUND"));
 
         return studentMapper.mapToDto(studentEntity);
     }
 
-    public void saveStudent(StudentDto studentDto) {
+    public void saveStudent(StudentSaveDto studentSaveDto) {
+        StudentEntity studentEntity = studentMapper.mapSaveDtoToEntity(studentSaveDto);
+        studentRepository.save(studentEntity);
+    }
 
     }
 

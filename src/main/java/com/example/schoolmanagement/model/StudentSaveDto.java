@@ -1,39 +1,23 @@
-package com.example.schoolmanagement.dao.entity;
+package com.example.schoolmanagement.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "students")
-public class StudentEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class StudentSaveDto {
     private String name;
     private String surname;
     private String fatherName;
-    @Column(name = "birth_date")
     private LocalDate birthDate;
 
-
-    public StudentEntity() {
+    public StudentSaveDto() {
     }
 
-    public StudentEntity(Long id, String name, String surname, String fatherName, LocalDate birthDate) {
-        this.id = id;
+    public StudentSaveDto(String name, String surname, String fatherName, LocalDate birthDate) {
         this.name = name;
         this.surname = surname;
         this.fatherName = fatherName;
         this.birthDate = birthDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -70,9 +54,8 @@ public class StudentEntity {
 
     @Override
     public String toString() {
-        return "StudentEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "StudentSaveDto{" +
+                "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", fatherName='" + fatherName + '\'' +
                 ", birthDate=" + birthDate +

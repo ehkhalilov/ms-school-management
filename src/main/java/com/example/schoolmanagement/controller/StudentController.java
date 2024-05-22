@@ -1,7 +1,12 @@
 package com.example.schoolmanagement.controller;
 
-import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.exception.NotFoundException;
+import com.example.schoolmanagement.model.Response;
+import com.example.schoolmanagement.model.StudentGetDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import com.example.schoolmanagement.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,19 +28,27 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
-    public List<StudentDto> getAllStudents() {
-        return studentService.getAllStudents();
+    @GetMapping("/getAll")
+    public ResponseEntity<Response<List<StudentGetDto>>> getAllStudents() {
+        try {
+            return ResponseEntity.ok(new Response<>("Successfully", studentService.getAllStudents()));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
+        }
     }
 
-    @GetMapping("/{studentId}")
-    public StudentDto getStudent(@PathVariable Long studentId) {
-        return studentService.getStudent(studentId);
+    @GetMapping("/getStudent{studentId}")
+    public ResponseEntity<Response<StudentGetDto>> getStudent(@PathVariable Long studentId) {
+        try {
+            return ResponseEntity.ok(new Response<>("Successfully", studentService.getStudent(studentId)));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
+        }
     }
 
-    @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
-        studentService.saveStudent(studentDto);
+    @PostMapping("/saveStudent")
+    public void saveStudent(@RequestBody StudentSaveDto studentSaveDto) {
+        studentService.saveStudent(studentSaveDto);
     }
 
     @PutMapping("/{studentId}")
