@@ -60,4 +60,29 @@ public class StudentService {
     }
 
 
+    public void graduate(Long studentId) throws NotFoundException{
+        StudentEntity studentEntity = studentRepository
+                .findById(studentId)
+                .orElseThrow(() ->new NotFoundException("STUDENT_NOT_FOUND"));
+
+        studentEntity.setGraduate(true);
+
+        studentRepository.save(studentEntity);
+    }
+
+    public List<StudentGetDto> getNotGraduatedStudents() throws NotFoundException{
+        List<StudentEntity> studentEntityList = studentRepository.getNotGraduatedStudents();
+        if(studentEntityList.isEmpty()) throw new NotFoundException("Students_NOT_FOUND");
+        return studentEntityList.stream()
+                .map(studentMapper::mapToDto)
+                .toList();
+    }
+
+    public List<StudentGetDto> getGraduatedStudents() throws NotFoundException{
+        List<StudentEntity> studentEntityList = studentRepository.getGraduatedStudents();
+        if(studentEntityList.isEmpty()) throw new NotFoundException("Students_NOT_FOUND");
+        return studentEntityList.stream()
+                .map(studentMapper::mapToDto)
+                .toList();
+    }
 }

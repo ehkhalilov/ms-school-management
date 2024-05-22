@@ -15,6 +15,7 @@ public class StudentMapper {
         studentGetDto.setName(studentEntity.getName());
         studentGetDto.setSurname(studentEntity.getSurname());
         studentGetDto.setBirthDate(studentEntity.getBirthDate());
+        studentGetDto.setGraduate(studentEntity.getGraduate());
 
         return studentGetDto;
     }
@@ -25,6 +26,7 @@ public class StudentMapper {
         studentEntity.setSurname(studentSaveDto.getSurname());
         studentEntity.setFatherName(studentSaveDto.getFatherName());
         studentEntity.setBirthDate(studentSaveDto.getBirthDate());
+        studentEntity.setGraduate(false);
 
         return studentEntity;
     }

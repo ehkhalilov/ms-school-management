@@ -7,15 +7,17 @@ public class StudentGetDto {
     private String name;
     private String surname;
     private LocalDate birthDate;
+    private Boolean isGraduate;
 
     public StudentGetDto() {
     }
 
-    public StudentGetDto(Long id, String name, String surname, LocalDate birthDate) {
+    public StudentGetDto(Long id, String name, String surname, LocalDate birthDate, Boolean isGraduate) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
+        this.isGraduate = isGraduate;
     }
 
     public Long getId() {
@@ -50,6 +52,14 @@ public class StudentGetDto {
         this.birthDate = birthDate;
     }
 
+    public Boolean getGraduate() {
+        return isGraduate;
+    }
+
+    public void setGraduate(Boolean graduate) {
+        isGraduate = graduate;
+    }
+
     @Override
     public String toString() {
         return "StudentGetDto{" +
@@ -57,6 +67,7 @@ public class StudentGetDto {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", birthDate=" + birthDate +
+                ", isGraduate=" + isGraduate +
                 '}';
     }
 }
