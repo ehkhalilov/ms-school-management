@@ -12,6 +12,7 @@ public class StudentEntity {
     private Long id;
     private String name;
     private String surname;
+    @Column(name = "father_name")
     private String fatherName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
