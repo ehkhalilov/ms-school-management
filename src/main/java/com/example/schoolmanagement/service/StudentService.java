@@ -43,11 +43,17 @@ public class StudentService {
 
     }
 
-    public void deleteStudent(Integer customerId) {
+    public void updateStudent(StudentSaveDto studentSaveDto, Long studentId) throws NotFoundException{
+        StudentEntity studentEntity = studentRepository
+                .findById(studentId)
+                .orElseThrow(() ->new NotFoundException("STUDENT_NOT_FOUND"));
 
-    }
+        studentEntity.setName(studentSaveDto.getName());
+        studentEntity.setSurname(studentSaveDto.getSurname());
+        studentEntity.setFatherName(studentSaveDto.getFatherName());
+        studentEntity.setBirthDate(studentSaveDto.getBirthDate());
 
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
+        studentRepository.save(studentEntity);
     }
 
 

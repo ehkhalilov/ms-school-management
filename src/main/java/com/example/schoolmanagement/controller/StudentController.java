@@ -51,9 +51,14 @@ public class StudentController {
         studentService.saveStudent(studentSaveDto);
     }
 
-    @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
-        studentService.updateStudent(studentDto, studentId);
+    @PutMapping("/update{studentId}")
+    public ResponseEntity<Response<?>> updateStudentById(@PathVariable Long studentId, @RequestBody StudentSaveDto studentSaveDto) {
+        try {
+            studentService.updateStudent(studentSaveDto, studentId);
+            return ResponseEntity.ok(new Response<>("Successfully"));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
+        }
     }
 
     @DeleteMapping("/{studentId}")
