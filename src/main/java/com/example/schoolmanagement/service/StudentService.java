@@ -41,6 +41,9 @@ public class StudentService {
         studentRepository.save(studentEntity);
     }
 
+    public void deleteStudent(Long studentId) throws NotFoundException{
+        studentRepository.findById(studentId).orElseThrow(()-> new NotFoundException("STUDENT_NOT_FOUND"));
+        studentRepository.deleteById(studentId);
     }
 
     public void updateStudent(StudentSaveDto studentSaveDto, Long studentId) throws NotFoundException{

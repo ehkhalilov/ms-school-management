@@ -61,8 +61,13 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/{studentId}")
-    public void delete(@PathVariable Integer studentId) {
-        studentService.deleteStudent(studentId);
+    @DeleteMapping("/deleteById{studentId}")
+    public ResponseEntity<Response<?>> deleteStudentById(@PathVariable Long studentId) {
+        try {
+            studentService.deleteStudent(studentId);
+            return ResponseEntity.ok(new Response<>("Student is deleted successfully"));
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
+        }
     }
 }
