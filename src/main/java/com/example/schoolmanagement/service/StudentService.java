@@ -23,8 +23,8 @@ public class StudentService {
     }
 
     public List<StudentDto> getAllStudents() {
-        List<StudentEntity> studentEntityList = studentRepository.findAll();
-        return studentEntityList.stream()
+        List<StudentEntity> graduatedStudentList = studentRepository.findByIsGraduatedFalse();
+        return graduatedStudentList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
     }
@@ -38,6 +38,7 @@ public class StudentService {
     public void saveStudent(StudentDto studentDto) {
         try {
             StudentEntity studentEntity = studentMapper.mapToEntity(studentDto);
+            studentEntity.setGraduated(false);  // isGraduated değerini false olarak ayarla
             studentRepository.save(studentEntity);
         } catch (Exception e) {
             logger.error("Error saving student: ", e);
@@ -45,6 +46,13 @@ public class StudentService {
         }
     }
 
+
+    public void graduateStudent(Long studentId) {
+        var studentEntity = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+        studentEntity.setGraduated(true);
+        studentRepository.save(studentEntity);
+    }
 
     public void deleteStudent(Long studentId) {
         logger.info("Deleting student with ID: {}", studentId);

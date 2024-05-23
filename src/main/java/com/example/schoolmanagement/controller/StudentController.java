@@ -30,20 +30,22 @@ public class StudentController {
     }
 
     @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
-        logger.info("Received POST request with student data: {}", studentDto);
+    public void saveStudent(@RequestBody StudentDto studentDto) {//request change
         studentService.saveStudent(studentDto);
+    }
+
+    @PatchMapping("/{studentId}")
+    public void graduateStudent(@PathVariable Long studentId) {
+        studentService.graduateStudent(studentId);
     }
 
     @PutMapping("/{studentId}")
     public void put(@PathVariable Long studentId, @RequestBody StudentDto studentDto) {
-        logger.info("Received PUT request for student ID: {} with data: {}", studentId, studentDto);
         studentService.updateStudent(studentDto, studentId);
     }
 
     @DeleteMapping("/{studentId}")
     public void delete(@PathVariable Long studentId) {
-        logger.info("Received DELETE request for student ID: {}", studentId);
         studentService.deleteStudent(studentId);
     }
 }

@@ -25,6 +25,7 @@ public class StudentMapper {
         studentEntity.setScore(studentDto.getScore());
         studentEntity.setBirthDate(studentDto.getBirthDate());
         studentEntity.setCourse(studentDto.getCourse());
+        studentEntity.setGraduated(studentDto.getGraduated());
 
         return studentEntity;
     }

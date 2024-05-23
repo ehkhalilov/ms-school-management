@@ -9,24 +9,35 @@ public class StudentDto {
     private LocalDate birthDate;
     private Double score;
     private Integer course;
+    private Boolean isGraduated;
 
     public StudentDto() {}
 
-    public StudentDto(String name, String surname, LocalDate birthDate, Double score, Integer course) {
-        this.name = name;
-        this.surname = surname;
-        this.score = score;
-        this.birthDate = birthDate;
-        this.course = course;
-    }
-
-    public StudentDto(Long id, String name, String surname, LocalDate birthDate, Double score, Integer course) {
+    public StudentDto(Long id, String name, String surname, LocalDate birthDate, Double score, Integer course, Boolean isGraduated) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.score = score;
         this.birthDate = birthDate;
+        this.score = score;
         this.course = course;
+        this.isGraduated = isGraduated;
+    }
+
+    public StudentDto( String name, String surname, LocalDate birthDate, Double score, Integer course, Boolean isGraduated) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.score = score;
+        this.course = course;
+        this.isGraduated = isGraduated;
+    }
+
+    public Boolean getGraduated() {
+        return isGraduated = false;
+    }
+
+    public void setGraduated(Boolean graduated) {
+        isGraduated = graduated;
     }
 
     public Long getId() {
