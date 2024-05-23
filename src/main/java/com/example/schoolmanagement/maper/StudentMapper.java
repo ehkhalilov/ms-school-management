@@ -16,4 +16,15 @@ public class StudentMapper {
 
         return studentDto;
     }
+
+    public StudentEntity dtoToMap(StudentDto studentDto){
+        StudentEntity studentEntity = new StudentEntity();
+
+        studentEntity.setName(studentDto.getName());
+        studentEntity.setSurname(studentDto.getSurname());
+        studentEntity.setStudentid(studentDto.getStudentId());
+
+        return studentEntity;
+
+    }
 }

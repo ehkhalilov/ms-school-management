@@ -34,7 +34,26 @@ public class StudentService {
         return studentMapper.mapToDto(studentEntity);
     }
 
+    public List<StudentDto> filterForGraduate(){
+
+        List<StudentEntity> studentEntityList = studentRepository.findAll().stream().filter((i)->!i.isGraduate()).toList();
+
+        List<StudentDto> studentDtoList = studentEntityList.stream()
+                .map(studentMapper::mapToDto).toList();
+
+        return studentDtoList;
+    }
+
     public void saveStudent(StudentDto studentDto) {
+
+//        studentDto.stream()
+//                .map(studentMapper::mapToDto)
+//                .toList();
+
+//        studentDto
+        StudentEntity studentEntity=studentMapper.dtoToMap(studentDto);
+
+        studentRepository.save(studentEntity);
 
     }
 
@@ -45,6 +64,7 @@ public class StudentService {
     }
 
     public void updateStudent(StudentDto studentDto, Integer customerId) {
+
     }
 
 

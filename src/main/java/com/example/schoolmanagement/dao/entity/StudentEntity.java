@@ -1,10 +1,6 @@
 package com.example.schoolmanagement.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -12,18 +8,22 @@ import java.time.LocalDate;
 @Table(name = "students")
 public class StudentEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studentid;
     private String name;
     private String surname;
 
+//    @Column(name = "isGraduate")
+    private boolean isGraduate;
+
     public StudentEntity() {
     }
 
-    public StudentEntity(Long studentid, String name, String surname, Double score, LocalDate birthDate, Integer course) {
+    public StudentEntity(Long studentid, String name, String surname, boolean isGraduate) {
         this.studentid = studentid;
         this.name = name;
         this.surname = surname;
-
+        this.isGraduate = isGraduate;
     }
 
     public Long getStudentid() {
@@ -50,4 +50,12 @@ public class StudentEntity {
         this.surname = surname;
     }
 
+    public boolean isGraduate() {
+        return isGraduate;
+    }
+
+    public void setGraduate(boolean graduate) {
+        isGraduate = graduate;
+    }
 }
+

@@ -4,6 +4,7 @@ public class StudentDto {
     private Long id;
     private String name;
     private String surname;
+    private boolean isGraduate;
 
 
     public StudentDto(Long id, String name, String surname) {
@@ -15,7 +16,7 @@ public class StudentDto {
     public StudentDto() {
     }
 
-    public Long getId() {
+    public Long getStudentId() {
         return id;
     }
 
@@ -31,12 +32,20 @@ public class StudentDto {
         this.name = name;
     }
 
-    public String getScore() {
+    public String getSurname() {
         return surname;
     }
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public boolean isGraduate() {
+        return isGraduate;
+    }
+
+    public void setGraduate(boolean graduate) {
+        isGraduate = graduate;
     }
 
     @Override

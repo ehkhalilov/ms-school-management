@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.controller;
 
+import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.service.StudentService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,8 +36,16 @@ public class StudentController {
     }
 
     @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
-        studentService.saveStudent(studentDto);
+    public void postStudent(@RequestBody StudentDto studentDto){
+
+                studentService.saveStudent(studentDto);
+    }
+
+    @GetMapping("/getGraduate")
+    public List<StudentDto> getGraduate(){
+
+        return studentService.filterForGraduate();
+
     }
 
     @PutMapping("/{studentId}")
