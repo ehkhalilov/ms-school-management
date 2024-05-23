@@ -57,5 +57,15 @@ public class StudentEntity {
     public void setGraduate(boolean graduate) {
         isGraduate = graduate;
     }
+
+    @Override
+    public String toString() {
+        return "StudentEntity{" +
+                "studentid=" + studentid +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", isGraduate=" + isGraduate +
+                '}';
+    }
 }
 

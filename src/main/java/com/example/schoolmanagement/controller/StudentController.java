@@ -41,6 +41,13 @@ public class StudentController {
                 studentService.saveStudent(studentDto);
     }
 
+    @PutMapping("{studentId}")
+    public void editStudent(@PathVariable Long studentId,@RequestBody StudentDto studentDto){
+
+        studentService.updateStudent(studentDto,studentId);
+
+    }
+
     @GetMapping("/getGraduate")
     public List<StudentDto> getGraduate(){
 
@@ -48,10 +55,7 @@ public class StudentController {
 
     }
 
-    @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
-        studentService.updateStudent(studentDto, studentId);
-    }
+
 
     @DeleteMapping("/{studentId}")
     public void delete(@PathVariable Long studentId) {
