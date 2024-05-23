@@ -16,4 +16,17 @@ public class StudentMapper {
 
         return studentDto;
     }
+
+    public StudentEntity mapToEntity(StudentDto studentDto) {
+        StudentEntity studentEntity = new StudentEntity();
+
+        studentEntity.setName(studentDto.getName());
+        studentEntity.setSurname(studentDto.getSurname());
+        studentEntity.setScore(studentDto.getScore());
+        studentEntity.setBirthDate(studentDto.getBirthDate());
+        studentEntity.setCourse(studentDto.getCourse());
+        studentEntity.setGraduated(studentDto.getGraduated());
+
+        return studentEntity;
+    }
 }
