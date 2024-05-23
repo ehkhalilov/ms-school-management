@@ -30,4 +30,12 @@ public class StudentMapper {
 
         return studentEntity;
     }
+
+    public StudentEntity mapDtoToEntityUpdate(StudentEntity studentEntity, StudentSaveDto studentSaveDto){
+        studentEntity.setName(studentSaveDto.getName());
+        studentEntity.setSurname(studentSaveDto.getSurname());
+        studentEntity.setFatherName(studentSaveDto.getFatherName());
+        studentEntity.setBirthDate(studentSaveDto.getBirthDate());
+        return studentEntity;
+    }
 }

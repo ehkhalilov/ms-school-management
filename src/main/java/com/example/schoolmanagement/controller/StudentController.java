@@ -30,7 +30,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/getStudent{studentId}")
+    @GetMapping("/getStudent/{studentId}")
     public ResponseEntity<Response<StudentGetDto>> getStudent(@PathVariable Long studentId) {
         try {
             return ResponseEntity.ok(new Response<>("Successfully", studentService.getStudent(studentId)));
@@ -44,7 +44,7 @@ public class StudentController {
         studentService.saveStudent(studentSaveDto);
     }
 
-    @PutMapping("/update{studentId}")
+    @PutMapping("/update/{studentId}")
     public ResponseEntity<Response<?>> updateStudentById(@PathVariable Long studentId, @RequestBody StudentSaveDto studentSaveDto) {
         try {
             studentService.updateStudent(studentSaveDto, studentId);
@@ -54,7 +54,7 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping("/deleteById{studentId}")
+    @DeleteMapping("/deleteById/{studentId}")
     public ResponseEntity<Response<?>> deleteStudentById(@PathVariable Long studentId) {
         try {
             studentService.deleteStudent(studentId);
@@ -64,7 +64,7 @@ public class StudentController {
         }
     }
 
-    @PatchMapping("/graduate{studentId}")
+    @PatchMapping("/graduate/{studentId}")
     public ResponseEntity<Response<?>> graduate(@PathVariable Long studentId) {
         try {
             studentService.graduate(studentId);
@@ -74,20 +74,11 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/getNotGraduatedStudents")
-    public ResponseEntity<Response<List<StudentGetDto>>> getNotGraduatedStudents(){
+    @GetMapping("/getAll/{graduate}")
+    public ResponseEntity<Response<List<StudentGetDto>>> getAllStudents(@PathVariable Boolean graduate) {
         try {
-            return ResponseEntity.ok(new Response<>("Successfully", studentService.getNotGraduatedStudents()));
-        }catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
-        }
-    }
-
-    @GetMapping("/getGraduatedStudents")
-    public ResponseEntity<Response<List<StudentGetDto>>> getGraduatedStudents(){
-        try {
-            return ResponseEntity.ok(new Response<>("Successfully", studentService.getGraduatedStudents()));
-        }catch (NotFoundException e) {
+            return ResponseEntity.ok(new Response<>("Successfully", studentService.getAllStudents(graduate)));
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
         }
     }

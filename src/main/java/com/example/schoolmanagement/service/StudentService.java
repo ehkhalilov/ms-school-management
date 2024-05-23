@@ -51,10 +51,7 @@ public class StudentService {
                 .findById(studentId)
                 .orElseThrow(() ->new NotFoundException("STUDENT_NOT_FOUND"));
 
-        studentEntity.setName(studentSaveDto.getName());
-        studentEntity.setSurname(studentSaveDto.getSurname());
-        studentEntity.setFatherName(studentSaveDto.getFatherName());
-        studentEntity.setBirthDate(studentSaveDto.getBirthDate());
+        studentEntity = studentMapper.mapDtoToEntityUpdate(studentEntity, studentSaveDto);
 
         studentRepository.save(studentEntity);
     }
@@ -65,24 +62,17 @@ public class StudentService {
                 .findById(studentId)
                 .orElseThrow(() ->new NotFoundException("STUDENT_NOT_FOUND"));
 
-        studentEntity.setGraduate(true);
+        studentEntity.setGraduate(!studentEntity.getGraduate());
 
         studentRepository.save(studentEntity);
     }
 
-    public List<StudentGetDto> getNotGraduatedStudents() throws NotFoundException{
-        List<StudentEntity> studentEntityList = studentRepository.getNotGraduatedStudents();
+    public List<StudentGetDto> getAllStudents(Boolean graduate) throws NotFoundException{
+        List<StudentEntity> studentEntityList = studentRepository.getStudentsByGraduate(graduate);
         if(studentEntityList.isEmpty()) throw new NotFoundException("Students_NOT_FOUND");
         return studentEntityList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
     }
 
-    public List<StudentGetDto> getGraduatedStudents() throws NotFoundException{
-        List<StudentEntity> studentEntityList = studentRepository.getGraduatedStudents();
-        if(studentEntityList.isEmpty()) throw new NotFoundException("Students_NOT_FOUND");
-        return studentEntityList.stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-    }
 }
