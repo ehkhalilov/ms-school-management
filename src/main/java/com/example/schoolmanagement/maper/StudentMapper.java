@@ -16,4 +16,20 @@ public class StudentMapper {
 
         return studentDto;
     }
+
+    public StudentEntity mapToEntity(StudentDto studentDto) {
+        StudentEntity studentEntity = new StudentEntity();
+
+        String name = studentDto.getName();
+        if (name != null) {
+            String[] parts = name.split(" ");
+            studentEntity.setName(parts[0]);
+            if (parts.length > 1) {
+                studentEntity.setSurname(parts[1]);
+            }
+        }
+        studentEntity.setScore(studentDto.getScore());
+
+        return studentEntity;
+    }
 }
