@@ -44,7 +44,11 @@ public class StudentService {
         studentRepository.deleteById(customerId);
     }
 
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
+    public void updateStudent(StudentDto studentDto, Long customerId) {
+        Long id = getStudent(customerId).getId();
+        StudentEntity studentEntity = studentMapper.mapToEntity(studentDto);
+        studentEntity.setId(id);
+        studentRepository.save(studentEntity);
     }
 
 

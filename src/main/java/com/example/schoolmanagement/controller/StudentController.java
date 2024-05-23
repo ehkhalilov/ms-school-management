@@ -39,7 +39,7 @@ public class StudentController {
     }
 
     @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
+    public void put(@PathVariable Long studentId, @RequestBody StudentDto studentDto) {
         studentService.updateStudent(studentDto, studentId);
     }
 
