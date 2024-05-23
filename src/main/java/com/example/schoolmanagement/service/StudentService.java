@@ -36,19 +36,7 @@ public class StudentService {
     }
 
     public void saveStudent(StudentDto studentDto) {
-        System.out.println(studentDto);
-        if( studentDto.getName()==null || studentDto.getSurname()==null ){
-            // I know it mustn't be like that )
-            throw new RuntimeException("Name and Surname required");
-        }
-        StudentEntity thisStudent = new StudentEntity(
-                studentDto.getName(),
-                studentDto.getSurname(),
-                studentDto.getBirthDate(),
-                studentDto.getScore(),
-                studentDto.getCourse()
-        );
-        System.out.println(thisStudent);
+        StudentEntity thisStudent = studentMapper.mapToEntity(studentDto);
         studentRepository.save(thisStudent);
     }
 
