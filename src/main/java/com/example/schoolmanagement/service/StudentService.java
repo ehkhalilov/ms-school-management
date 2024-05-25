@@ -58,6 +58,22 @@ public class StudentService {
 
     }
 
+    public void editGraduate(Long studentId,StudentDto studentDto){
+
+        Optional<StudentEntity> studentEntity = studentRepository.findById(studentId);
+
+        if(studentEntity.isPresent()){
+
+            StudentEntity studentEntity1 = studentEntity.get();
+
+            studentEntity1.setGraduate(studentDto.isGraduate());
+
+            studentRepository.save(studentEntity1);
+
+        }
+
+    }
+
     public void deleteStudent(Long customerId) {
 
         studentRepository.deleteById(customerId);
@@ -91,6 +107,12 @@ public class StudentService {
 //            studentRepository.save(studentEntity1);
 //
 //        }
+
+    }
+
+    public StudentEntity findByNameAndSurname(String name,String surname){
+
+        return studentRepository.findByNameAndSurname(name,surname);
 
     }
 
