@@ -1,27 +1,34 @@
 package com.example.schoolmanagement.model;
 
 import com.example.schoolmanagement.enums.Grade;
-import jakarta.persistence.Id;
 
-public class StudentDto {
+public class StudentSaveDto {
 
-    @Id
     private Long studentid;
-
     private String name;
     private String surname;
     private boolean isGraduate;
-    private Grade score;
+    private Double score;
 
-
-    public StudentDto(Long studentid, String name, String surname,Grade score) {
-        this.studentid = studentid;
+    public StudentSaveDto(Long id, String name, String surname, Double score) {
+        this.studentid = id;
         this.name = name;
         this.surname = surname;
-        this.score=score;
+        this.score = score;
     }
 
-    public StudentDto() {
+    public StudentSaveDto() {
+    }
+
+    @Override
+    public String toString() {
+        return "StudentSaveDto{" +
+                "studentid=" + studentid +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", isGraduate=" + isGraduate +
+                ", score=" + score +
+                '}';
     }
 
     public Long getStudentid() {
@@ -56,21 +63,11 @@ public class StudentDto {
         isGraduate = graduate;
     }
 
-
-    public Grade getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Grade score) {
+    public void setScore(Double score) {
         this.score = score;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentDto{" +
-                "studentid=" + studentid +
-                ", name='" + name + '\'' +
-                ", surname=" + surname +
-                '}';
     }
 }

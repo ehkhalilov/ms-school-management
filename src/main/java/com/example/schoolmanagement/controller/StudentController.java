@@ -1,16 +1,12 @@
 package com.example.schoolmanagement.controller;
 
+import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import com.example.schoolmanagement.service.StudentService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,6 +19,10 @@ public class StudentController {
         this.studentService = studentService;
     }
 
+    @GetMapping("/{studentName}/{studentSurname}")
+    public StudentEntity getNameAndSurname(@PathVariable String studentName,@PathVariable String studentSurname ){
+        return studentService.findByNameAndSurname(studentName, studentSurname);
+    }
     @GetMapping
     public List<StudentDto> getAllStudents() {
         return studentService.getAllStudents();
@@ -33,18 +33,36 @@ public class StudentController {
         return studentService.getStudent(studentId);
     }
 
+    @PatchMapping("/editgraduate/{studentId}")
+    public void editGraduate(@PathVariable Long studentId,@RequestBody StudentSaveDto studentSaveDto){
+        studentService.editGraduate(studentId,studentSaveDto);
+    }
     @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
-        studentService.saveStudent(studentDto);
+    public void postStudent(@RequestBody StudentSaveDto studentSaveDto){
+
+                studentService.saveStudent(studentSaveDto);
     }
 
-    @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
-        studentService.updateStudent(studentDto, studentId);
+
+
+    @PutMapping("{studentId}")
+    public void editStudent(@PathVariable Long studentId,@RequestBody StudentDto studentDto){
+
+        studentService.updateStudent(studentDto,studentId);
+
     }
+
+    @GetMapping("/getGraduate")
+    public List<StudentDto> getGraduate(){
+
+        return studentService.filterForGraduate();
+
+    }
+
+
 
     @DeleteMapping("/{studentId}")
-    public void delete(@PathVariable Integer studentId) {
+    public void delete(@PathVariable Long studentId) {
         studentService.deleteStudent(studentId);
     }
 }

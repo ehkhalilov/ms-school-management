@@ -4,9 +4,11 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -34,15 +36,85 @@ public class StudentService {
         return studentMapper.mapToDto(studentEntity);
     }
 
-    public void saveStudent(StudentDto studentDto) {
+    public List<StudentDto> filterForGraduate(){
+
+        List<StudentEntity> studentEntityList = studentRepository.findAll().stream().filter((i)->!i.isGraduate()).toList();
+
+        List<StudentDto> studentDtoList = studentEntityList.stream()
+                .map(studentMapper::mapToDto).toList();
+
+        return studentDtoList;
+    }
+
+    public void saveStudent(StudentSaveDto studentSaveDto) {
+
+//        studentDto.stream()
+//                .map(studentMapper::mapToDto)
+//                .toList();
+
+//        studentDto
+        StudentEntity studentEntity=studentMapper.dtoToMap(studentSaveDto);
+
+        studentRepository.save(studentEntity);
 
     }
 
-    public void deleteStudent(Integer customerId) {
+    public void editGraduate(Long studentId,StudentSaveDto studentSaveDto){
+
+        Optional<StudentEntity> studentEntity = studentRepository.findById(studentId);
+
+        if(studentEntity.isPresent()){
+
+            StudentEntity studentEntity1 = studentEntity.get();
+
+            studentEntity1.setGraduate(studentSaveDto.isGraduate());
+
+            studentRepository.save(studentEntity1);
+
+        }
 
     }
 
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
+    public void deleteStudent(Long customerId) {
+
+        studentRepository.deleteById(customerId);
+
+    }
+
+    public void updateStudent(StudentDto studentDto, Long customerId) {
+
+        Optional<StudentEntity> studentEntity =  studentRepository.findById(customerId);
+//
+        System.out.println(studentEntity.get());
+        if(studentEntity.isPresent()) {
+            StudentEntity studentEntity1 = studentEntity.get();
+
+//            studentEntity1.setStudentid(studentDto.getStudentId());
+            studentEntity1.setName(studentDto.getName());
+            studentEntity1.setSurname(studentDto.getSurname());
+            studentEntity1.setGraduate(studentDto.isGraduate());
+
+            studentRepository.save(studentEntity1);
+
+        }
+            //
+//            StudentEntity studentEntity1 = studentEntity.get();
+//
+//            studentEntity1.setStudentid(studentDto.getStudentId());
+//            studentEntity1.setName(studentDto.getName());
+//            studentEntity1.setSurname(studentDto.getSurname());
+//            studentEntity1.setGraduate(studentDto.isGraduate());
+//
+//            studentRepository.save(studentEntity1);
+//
+//        }
+
+    }
+
+    public StudentEntity findByNameAndSurname(String name,String surname){
+
+        return studentRepository.findByNameAndSurname(name,surname);
+
     }
 
 
