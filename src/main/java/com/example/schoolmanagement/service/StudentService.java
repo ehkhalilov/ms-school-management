@@ -75,15 +75,18 @@ public class StudentService {
     public StudentWithGradeDto getStudentWithGrade(Long studentId) {
         StudentEntity studentEntity = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
-        Grade grade = Grade.fromScore(studentEntity.getScore());
-        return new StudentWithGradeDto(
-                studentEntity.getId(),
-                studentEntity.getName(),
-                studentEntity.getSurname(),
-                studentEntity.getBirthDate(),
-                studentEntity.getScore(),
-                studentEntity.getCourse(),
-                grade
-        );
+//        Grade grade = Grade.fromScore(studentEntity.getScore());
+//        return new StudentWithGradeDto(
+//                studentEntity.getId(),
+//                studentEntity.getName(),
+//                studentEntity.getSurname(),
+//                studentEntity.getBirthDate(),
+//                studentEntity.getScore(),
+//                studentEntity.getCourse(),
+//                grade
+//        );
+        return studentMapper.toDto(studentEntity);
     }
+
+
 }
