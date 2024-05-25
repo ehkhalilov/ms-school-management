@@ -1,10 +1,6 @@
 package com.example.schoolmanagement.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -12,12 +8,12 @@ import java.time.LocalDate;
 @Table(name = "students")
 public class StudentEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
     private Double score;
     @Column(name = "birth_date")
-    @Transient
     private LocalDate birthDate;
     private Integer course;
 
@@ -66,7 +62,7 @@ public class StudentEntity {
     }
 
     public LocalDate getBirthDate() {
-        return birthDate;
+        return birthDate; // Bu satırı düzelttik
     }
 
     public void setBirthDate(LocalDate birthDate) {
