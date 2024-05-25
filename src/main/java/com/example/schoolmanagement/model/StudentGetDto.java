@@ -1,5 +1,7 @@
 package com.example.schoolmanagement.model;
 
+import com.example.schoolmanagement.dao.enums.Score;
+
 import java.time.LocalDate;
 
 public class StudentGetDto {
@@ -8,16 +10,18 @@ public class StudentGetDto {
     private String surname;
     private LocalDate birthDate;
     private Boolean isGraduate;
+    private Score score;
 
     public StudentGetDto() {
     }
 
-    public StudentGetDto(Long id, String name, String surname, LocalDate birthDate, Boolean isGraduate) {
+    public StudentGetDto(Long id, String name, String surname, LocalDate birthDate, Boolean isGraduate, Score score) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.isGraduate = isGraduate;
+        this.score = score;
     }
 
     public Long getId() {
@@ -58,6 +62,14 @@ public class StudentGetDto {
 
     public void setGraduate(Boolean graduate) {
         isGraduate = graduate;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
     }
 
     @Override

@@ -23,13 +23,8 @@ public class StudentController {
 
     @GetMapping("/getAll")
     public ResponseEntity<Response<List<StudentGetDto>>> getAllStudents() {
-        try {
-            return ResponseEntity.ok(new Response<>("Successfully", studentService.getAllStudents()));
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
-        }
+        return ResponseEntity.ok(new Response<>("Successfully", studentService.getAllStudents()));
     }
-
     @GetMapping("/getStudent/{studentId}")
     public ResponseEntity<Response<StudentGetDto>> getStudent(@PathVariable Long studentId) {
         try {

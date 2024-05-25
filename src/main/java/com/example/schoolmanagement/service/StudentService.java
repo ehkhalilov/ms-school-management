@@ -20,9 +20,8 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
-    public List<StudentGetDto> getAllStudents() throws NotFoundException{
+    public List<StudentGetDto> getAllStudents(){
         List<StudentEntity> studentEntityList = studentRepository.findAll();
-        if(studentEntityList.isEmpty()) throw new NotFoundException("Students_NOT_FOUND");
         return studentEntityList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
@@ -51,7 +50,7 @@ public class StudentService {
                 .findById(studentId)
                 .orElseThrow(() ->new NotFoundException("STUDENT_NOT_FOUND"));
 
-        studentEntity = studentMapper.mapDtoToEntityUpdate(studentEntity, studentSaveDto);
+        studentEntity = studentMapper.mapDtoToEntityUpdate(studentSaveDto, studentEntity);
 
         studentRepository.save(studentEntity);
     }

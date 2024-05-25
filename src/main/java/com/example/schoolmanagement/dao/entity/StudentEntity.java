@@ -18,18 +18,21 @@ public class StudentEntity {
     private LocalDate birthDate;
     @Column(name = "is_graduate")
     private Boolean isGraduate;
+    private Double score;
 
 
     public StudentEntity() {
     }
 
-    public StudentEntity(Long id, String name, String surname, String fatherName, LocalDate birthDate, Boolean isGraduate) {
+    public StudentEntity(Long id, String name, String surname, String fatherName,
+                         LocalDate birthDate, Boolean isGraduate, Double score) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.fatherName = fatherName;
         this.birthDate = birthDate;
         this.isGraduate = isGraduate;
+        this.score = score;
     }
 
     public Long getId() {
@@ -80,6 +83,14 @@ public class StudentEntity {
         isGraduate = graduate;
     }
 
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
         return "StudentEntity{" +
@@ -89,6 +100,7 @@ public class StudentEntity {
                 ", fatherName='" + fatherName + '\'' +
                 ", birthDate=" + birthDate +
                 ", isGraduate=" + isGraduate +
+                ", score=" + score +
                 '}';
     }
 }

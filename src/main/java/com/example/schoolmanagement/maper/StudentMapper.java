@@ -1,41 +1,24 @@
 package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.dao.enums.Score;
 import com.example.schoolmanagement.model.StudentGetDto;
 import com.example.schoolmanagement.model.StudentSaveDto;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class StudentMapper {
 
-    public StudentGetDto mapToDto(StudentEntity studentEntity) {
-        StudentGetDto studentGetDto = new StudentGetDto();
 
-        studentGetDto.setId(studentEntity.getId());
-        studentGetDto.setName(studentEntity.getName());
-        studentGetDto.setSurname(studentEntity.getSurname());
-        studentGetDto.setBirthDate(studentEntity.getBirthDate());
-        studentGetDto.setGraduate(studentEntity.getGraduate());
+@Mapper(componentModel = "spring", imports = {Score.class})
+public abstract class StudentMapper {
 
-        return studentGetDto;
-    }
-    public StudentEntity mapSaveDtoToEntity(StudentSaveDto studentSaveDto) {
-        StudentEntity studentEntity = new StudentEntity();
+    @Mapping(target = "score", expression = "java(Score.getScore(studentEntity.getScore()))")
+    public abstract StudentGetDto mapToDto(StudentEntity studentEntity);
 
-        studentEntity.setName(studentSaveDto.getName());
-        studentEntity.setSurname(studentSaveDto.getSurname());
-        studentEntity.setFatherName(studentSaveDto.getFatherName());
-        studentEntity.setBirthDate(studentSaveDto.getBirthDate());
-        studentEntity.setGraduate(false);
+    @Mapping(target = "graduate", constant = "false")
+    public abstract StudentEntity mapSaveDtoToEntity(StudentSaveDto studentSaveDto);
 
-        return studentEntity;
-    }
-
-    public StudentEntity mapDtoToEntityUpdate(StudentEntity studentEntity, StudentSaveDto studentSaveDto){
-        studentEntity.setName(studentSaveDto.getName());
-        studentEntity.setSurname(studentSaveDto.getSurname());
-        studentEntity.setFatherName(studentSaveDto.getFatherName());
-        studentEntity.setBirthDate(studentSaveDto.getBirthDate());
-        return studentEntity;
-    }
+    public abstract StudentEntity mapDtoToEntityUpdate(
+            StudentSaveDto studentSaveDto, @MappingTarget StudentEntity studentEntity);
 }
