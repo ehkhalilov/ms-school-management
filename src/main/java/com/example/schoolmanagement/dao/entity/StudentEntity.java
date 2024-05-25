@@ -16,17 +16,20 @@ public class StudentEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
     private Integer course;
+    @Column(name="is_graduated")
+    private Boolean isGraduated;
 
     public StudentEntity() {
     }
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course) {
+    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course, Boolean isGraduated) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.score = score;
         this.birthDate = birthDate;
         this.course = course;
+        this.isGraduated = isGraduated;
     }
 
     public Long getId() {
@@ -75,5 +78,13 @@ public class StudentEntity {
 
     public void setCourse(Integer course) {
         this.course = course;
+    }
+
+    public Boolean getGraduated() {
+        return isGraduated;
+    }
+
+    public void setGraduated(Boolean graduated) {
+        isGraduated = graduated;
     }
 }

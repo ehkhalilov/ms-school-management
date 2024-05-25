@@ -19,7 +19,7 @@ public class StudentService {
     }
 
     public List<StudentDto> getAllStudents() {
-        List<StudentEntity> studentEntityList = studentRepository.findAll();
+        List<StudentEntity> studentEntityList = studentRepository.findByIsGraduatedFalse();
 
         return studentEntityList.stream()
                 .map(studentMapper::mapToDto)
@@ -36,6 +36,7 @@ public class StudentService {
 
     public void saveStudent(StudentDto studentDto) {
         StudentEntity studentEntity = studentMapper.mapToEntity(studentDto);
+        studentEntity.setGraduated(false);
         studentRepository.save(studentEntity);
     }
 
@@ -53,7 +54,17 @@ public class StudentService {
         existingStudent.setName(updatedStudent.getName());
         existingStudent.setSurname(updatedStudent.getSurname());
         existingStudent.setScore(updatedStudent.getScore());
+        existingStudent.setBirthDate(updatedStudent.getBirthDate());
+        existingStudent.setCourse(updatedStudent.getCourse());
 
         studentRepository.save(existingStudent);
+    }
+
+    public void gruatedStudent(Long customerId) {
+        StudentEntity studentEntity = studentRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+
+        studentEntity.setGraduated(true);
+        studentRepository.save(studentEntity);
     }
 }
