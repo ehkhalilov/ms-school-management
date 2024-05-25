@@ -4,6 +4,7 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,20 +46,20 @@ public class StudentService {
         return studentDtoList;
     }
 
-    public void saveStudent(StudentDto studentDto) {
+    public void saveStudent(StudentSaveDto studentSaveDto) {
 
 //        studentDto.stream()
 //                .map(studentMapper::mapToDto)
 //                .toList();
 
 //        studentDto
-        StudentEntity studentEntity=studentMapper.dtoToMap(studentDto);
+        StudentEntity studentEntity=studentMapper.dtoToMap(studentSaveDto);
 
         studentRepository.save(studentEntity);
 
     }
 
-    public void editGraduate(Long studentId,StudentDto studentDto){
+    public void editGraduate(Long studentId,StudentSaveDto studentSaveDto){
 
         Optional<StudentEntity> studentEntity = studentRepository.findById(studentId);
 
@@ -66,7 +67,7 @@ public class StudentService {
 
             StudentEntity studentEntity1 = studentEntity.get();
 
-            studentEntity1.setGraduate(studentDto.isGraduate());
+            studentEntity1.setGraduate(studentSaveDto.isGraduate());
 
             studentRepository.save(studentEntity1);
 

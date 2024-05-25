@@ -2,6 +2,7 @@ package com.example.schoolmanagement.controller;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentSaveDto;
 import com.example.schoolmanagement.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +34,13 @@ public class StudentController {
     }
 
     @PatchMapping("/editgraduate/{studentId}")
-    public void editGraduate(@PathVariable Long studentId,@RequestBody StudentDto studentDto){
-        studentService.editGraduate(studentId,studentDto);
+    public void editGraduate(@PathVariable Long studentId,@RequestBody StudentSaveDto studentSaveDto){
+        studentService.editGraduate(studentId,studentSaveDto);
     }
     @PostMapping
-    public void postStudent(@RequestBody StudentDto studentDto){
+    public void postStudent(@RequestBody StudentSaveDto studentSaveDto){
 
-                studentService.saveStudent(studentDto);
+                studentService.saveStudent(studentSaveDto);
     }
 
 
