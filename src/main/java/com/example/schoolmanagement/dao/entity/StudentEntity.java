@@ -61,8 +61,8 @@ public class StudentEntity {
         this.score = score;
     }
 
-    public LocalDate getBirthDate(LocalDate birthDate) {
-        return this.birthDate;
+    public LocalDate getBirthDate() {
+        return birthDate; // Bu satırı düzelttik
     }
 
     public void setBirthDate(LocalDate birthDate) {

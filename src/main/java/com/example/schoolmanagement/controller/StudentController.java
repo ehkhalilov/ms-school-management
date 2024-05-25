@@ -1,6 +1,8 @@
 package com.example.schoolmanagement.controller;
 
+import com.example.schoolmanagement.model.Grade;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentWithGradeDto;
 import com.example.schoolmanagement.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,12 @@ public class StudentController {
         return studentService.getStudent(studentId);
     }
 
+    @GetMapping("/{studentId}/grade")
+    public Grade getStudentGrade(@PathVariable Long studentId) {
+        return studentService.getStudentGrade(studentId);
+    }
+
+
     @PostMapping
     public void post(@RequestBody StudentDto studentDto) {
         logger.info("Received POST request with student data: {}", studentDto);
@@ -46,4 +54,9 @@ public class StudentController {
         logger.info("Received DELETE request for student ID: {}", studentId);
         studentService.deleteStudent(studentId);
     }
+    @GetMapping("/{studentId}/with-grade")
+    public StudentWithGradeDto getStudentWithGrade(@PathVariable Long studentId) {
+        return studentService.getStudentWithGrade(studentId);
+    }
+
 }
