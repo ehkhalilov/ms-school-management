@@ -16,15 +16,14 @@ public class StudentEntity {
     private String name;
     private String surname;
     private Double score;
-    @Column(name = "birth_date")
-    @Transient
+    @Column(name = "birthdate")
     private LocalDate birthDate;
-    private Integer course;
+    private String course;
 
     public StudentEntity() {
     }
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course) {
+    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, String course) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -73,11 +72,11 @@ public class StudentEntity {
         this.birthDate = birthDate;
     }
 
-    public Integer getCourse() {
+    public String getCourse() {
         return course;
     }
 
-    public void setCourse(Integer course) {
+    public void setCourse(String course) {
         this.course = course;
     }
 }

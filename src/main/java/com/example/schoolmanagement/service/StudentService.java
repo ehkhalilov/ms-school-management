@@ -35,14 +35,25 @@ public class StudentService {
     }
 
     public void saveStudent(StudentDto studentDto) {
-
+        studentRepository.save(studentMapper.mapToEntity(studentDto));
     }
 
-    public void deleteStudent(Integer customerId) {
-
+    public void deleteStudent(Long customerId) {
+        studentRepository.deleteById(customerId);
     }
 
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
+    public void updateStudent(StudentDto studentDto, Long studentId) {
+//        studentRepository.setStudentInfoById(studentDto.getName(),studentDto.getSurname(),
+//                studentDto.getScore(), studentDto.getBirthDate(),
+//                studentDto.getCourse(), customerId);
+        studentRepository.save(new StudentEntity(
+                studentId,
+                studentDto.getName(),
+                studentDto.getSurname(),
+                studentDto.getScore(),
+                studentDto.getBirthDate(),
+                studentDto.getCourse()
+        ));
     }
 
 
