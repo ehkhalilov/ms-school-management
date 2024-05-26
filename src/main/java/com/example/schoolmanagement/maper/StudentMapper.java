@@ -1,11 +1,18 @@
 package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.model.StudentDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StudentMapper {
+
+    private final StudentRepository studentRepository;
+
+    public StudentMapper(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public StudentDto mapToDto(StudentEntity studentEntity) {
         StudentDto studentDto = new StudentDto();
@@ -20,6 +27,7 @@ public class StudentMapper {
         return studentDto;
     }
     public StudentEntity mapToEntity(StudentDto studentDto) {
+
         StudentEntity studentEntity = new StudentEntity();
 
         studentEntity.setId(studentDto.getId());

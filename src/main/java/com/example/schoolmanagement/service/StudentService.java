@@ -26,9 +26,9 @@ public class StudentService {
                 .toList();
     }
 
-    public StudentDto getStudent(Long customerId) {
+    public StudentDto getStudent(Long studentId) {
         var studentEntity = studentRepository
-                .findById(customerId)
+                .findById(studentId)
                 .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
 
         return studentMapper.mapToDto(studentEntity);
@@ -38,22 +38,14 @@ public class StudentService {
         studentRepository.save(studentMapper.mapToEntity(studentDto));
     }
 
-    public void deleteStudent(Long customerId) {
-        studentRepository.deleteById(customerId);
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
     }
 
     public void updateStudent(StudentDto studentDto, Long studentId) {
-//        studentRepository.setStudentInfoById(studentDto.getName(),studentDto.getSurname(),
-//                studentDto.getScore(), studentDto.getBirthDate(),
-//                studentDto.getCourse(), customerId);
-        studentRepository.save(new StudentEntity(
-                studentId,
-                studentDto.getName(),
-                studentDto.getSurname(),
-                studentDto.getScore(),
-                studentDto.getBirthDate(),
-                studentDto.getCourse()
-        ));
+        studentRepository.setStudentInfoById(studentDto.getName(),studentDto.getSurname(),
+                studentDto.getScore(), studentDto.getBirthDate(),
+                studentDto.getCourse(), studentId);
     }
 
 
