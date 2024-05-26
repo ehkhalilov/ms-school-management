@@ -2,6 +2,7 @@ package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.enums.Mark;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +17,9 @@ public class StudentMapper {
         studentDto.setBirthDate(studentEntity.getBirthDate());
         studentDto.setScore(studentEntity.getScore());
         studentDto.setCourse(studentEntity.getCourse());
+        studentDto.setMark(
+                Mark.getMarkByScore(studentEntity.getScore() )
+        );
 
         return studentDto;
     }

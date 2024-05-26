@@ -1,6 +1,8 @@
 package com.example.schoolmanagement.model;
 
 
+import com.example.schoolmanagement.model.enums.Mark;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -13,6 +15,7 @@ public class StudentDto {
     private LocalDate birthDate;
     private Double score;
     private Integer course;
+    private Enum<Mark> mark;
 
     public StudentDto(Long id, String name, Double score) {
         this.id = id;
@@ -28,6 +31,10 @@ public class StudentDto {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
         this.birthDate = LocalDate.parse(birthDate, formatter);
 
+        if(score != null){
+            this.mark = Mark.getMarkByScore(score);
+        }
+
         this.score = score;
         this.course = course;
     }
@@ -35,6 +42,14 @@ public class StudentDto {
     public StudentDto() {
     }
 
+
+    public Enum<Mark> getMark() {
+        return mark;
+    }
+
+    public void setMark(Enum<Mark> mark) {
+        this.mark = mark;
+    }
 
     public Long getId() {
         return id;
