@@ -5,7 +5,6 @@ import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -19,31 +18,32 @@ public class StudentService {
     }
 
     public List<StudentDto> getAllStudents() {
-        List<StudentEntity> studentEntityList = studentRepository.findAll();
-
+        List<StudentEntity> studentEntityList = (List<StudentEntity>) studentRepository.findAll();
         return studentEntityList.stream()
-                .map(studentMapper::mapToDto)
+                .map(studentMapper::mapToDTO)
                 .toList();
     }
 
-    public StudentDto getStudent(Long customerId) {
-        var studentEntity = studentRepository
-                .findById(customerId)
-                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+    public StudentDto getStudent(Long studentId) {
+        StudentEntity studentInfo = studentRepository
+                .findById(studentId)
+                .orElseThrow(() -> new RuntimeException("STUDENT NOT FOUND"));
 
-        return studentMapper.mapToDto(studentEntity);
+        return studentMapper.mapToDTO(studentInfo);
     }
 
     public void saveStudent(StudentDto studentDto) {
-
+        studentRepository.save(studentMapper.mapToEntity(studentDto));
     }
 
-    public void deleteStudent(Integer customerId) {
-
+    public void updateStudent(StudentDto studentDto, Long studentId) {
+        Long dataId = (studentId != null) ? studentId : studentDto.getId();
+        studentRepository.deleteById(dataId);
+        StudentEntity studentEntityUpdated = studentMapper.mapToEntity(studentDto);
+        studentRepository.save(studentEntityUpdated);
     }
 
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
     }
-
-
 }

@@ -6,14 +6,28 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StudentMapper {
+    public StudentDto mapToDTO(StudentEntity studentEntity) {
+        StudentDto studentsDTO = new StudentDto();
 
-    public StudentDto mapToDto(StudentEntity studentEntity) {
-        StudentDto studentDto = new StudentDto();
+        studentsDTO.setId(studentEntity.getId());
+        studentsDTO.setName(studentEntity.getName());
+        studentsDTO.setScore(studentEntity.getScore());
+        studentsDTO.setBirthDate(studentEntity.getBirthDate());
+        studentsDTO.setCourse(studentEntity.getCourse());
+        studentsDTO.setGraduated(studentEntity.getIsGraduated());
 
-        studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
-        studentDto.setScore(studentEntity.getScore());
+        return studentsDTO;
+    }
 
-        return studentDto;
+    public StudentEntity mapToEntity(StudentDto studentsDTO) {
+        StudentEntity studentEntity = new StudentEntity();
+        studentEntity.setId(studentsDTO.getId());
+        studentEntity.setName(studentsDTO.getName());
+        studentEntity.setScore(studentsDTO.getScore());
+        studentEntity.setBirthDate(studentsDTO.getBirthDate());
+        studentEntity.setCourse(studentsDTO.getCourse());
+        studentEntity.setIsGraduated(studentsDTO.getGraduated());
+
+        return studentEntity;
     }
 }

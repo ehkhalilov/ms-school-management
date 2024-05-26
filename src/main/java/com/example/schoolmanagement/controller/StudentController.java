@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/students/")
 public class StudentController {
 
     private final StudentService studentService;
@@ -23,28 +23,34 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping
+    @GetMapping("/all-data")
     public List<StudentDto> getAllStudents() {
         return studentService.getAllStudents();
     }
 
-    @GetMapping("/{studentId}")
+    @GetMapping("/{studentId}/info")
     public StudentDto getStudent(@PathVariable Long studentId) {
         return studentService.getStudent(studentId);
     }
 
-    @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
+    @PostMapping("/{studentId}/set-data")
+    public void post(
+            @PathVariable Long studentId,
+            @RequestBody StudentDto studentDto
+    ) {
         studentService.saveStudent(studentDto);
     }
 
-    @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
+    @PutMapping("/{studentId}/update-data")
+    public void put(
+            @PathVariable(required = false) Long studentId,
+            @RequestBody StudentDto studentDto
+    ) {
         studentService.updateStudent(studentDto, studentId);
     }
 
-    @DeleteMapping("/{studentId}")
-    public void delete(@PathVariable Integer studentId) {
+    @DeleteMapping("/deleted/{studentId}")
+    public void delete(@PathVariable Long studentId) {
         studentService.deleteStudent(studentId);
     }
 }
