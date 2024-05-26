@@ -1,18 +1,25 @@
 package com.example.schoolmanagement.model;
 
+import java.time.LocalDate;
+
 public class StudentDto {
     private Long id;
     private String name;
     private Double score;
+    private LocalDate birthDate;
+    private Integer course;
+    private Boolean isGraduated;
 
-    public StudentDto(Long id, String name, Double score) {
+    public StudentDto(Long id, String name, Double score, LocalDate birthDate, Integer course, Boolean isGraduated) {
         this.id = id;
         this.name = name;
         this.score = score;
+        this.birthDate = birthDate;
+        this.course = course;
+        this.isGraduated = isGraduated;
     }
 
-    public StudentDto() {
-    }
+    public StudentDto() {}
 
     public Long getId() {
         return id;
@@ -38,9 +45,33 @@ public class StudentDto {
         this.score = score;
     }
 
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Integer getCourse() {
+        return course;
+    }
+
+    public void setCourse(Integer course) {
+        this.course = course;
+    }
+
+    public Boolean getGraduated() {
+        return isGraduated;
+    }
+
+    public void setGraduated(Boolean graduated) {
+        isGraduated = graduated;
+    }
+
     @Override
     public String toString() {
-        return "StudentDto{" +
+        return "StudentsDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", score=" + score +

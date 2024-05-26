@@ -1,36 +1,34 @@
 package com.example.schoolmanagement.dao.entity;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+//import jakarta.persistence.Transient;
+//import jakarta.persistence.Column;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "students")
+@Table(name="jt_students") // Table in which the columns have taken
 public class StudentEntity {
     @Id
     private Long id;
     private String name;
-    private String surname;
     private Double score;
-    @Column(name = "birth_date")
-    @Transient
     private LocalDate birthDate;
     private Integer course;
+    private Boolean isGraduated;
 
-    public StudentEntity() {
-    }
+    public StudentEntity() {}
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course) {
+    public StudentEntity(Long id, String name, Double score, LocalDate birth_date, Integer course, Boolean isGraduated) {
         this.id = id;
         this.name = name;
-        this.surname = surname;
         this.score = score;
-        this.birthDate = birthDate;
+        this.birthDate = birth_date;
         this.course = course;
+        this.isGraduated = isGraduated;
     }
 
     public Long getId() {
@@ -49,14 +47,6 @@ public class StudentEntity {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public Double getScore() {
         return score;
     }
@@ -69,8 +59,8 @@ public class StudentEntity {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDate(LocalDate birth_date) {
+        this.birthDate = birth_date;
     }
 
     public Integer getCourse() {
@@ -79,5 +69,13 @@ public class StudentEntity {
 
     public void setCourse(Integer course) {
         this.course = course;
+    }
+
+    public Boolean getIsGraduated() {
+        return isGraduated;
+    }
+
+    public void setIsGraduated(Boolean isGraduated) {
+        this.isGraduated = isGraduated;
     }
 }
