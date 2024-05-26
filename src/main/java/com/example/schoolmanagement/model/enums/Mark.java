@@ -6,14 +6,9 @@ public enum Mark {
     F , E, D , C , B , A;
 
     public static Mark getMarkByScore(Double score){
-        double order = (score - 51) / 10;
-
-        for (Mark item: Mark.values() ) {
-            if(item.ordinal() > order){
-                return item;
-            }
-        }
-        return null;
+        if(score < 51) return F;
+        int order = (int)((score - 51) / 10);
+        return Mark.values()[order + 1];
     }
 
 }
