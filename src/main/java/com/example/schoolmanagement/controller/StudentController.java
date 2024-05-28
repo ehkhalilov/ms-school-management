@@ -5,6 +5,7 @@ import com.example.schoolmanagement.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
@@ -39,6 +40,11 @@ public class StudentController {
     @DeleteMapping("/{studentId}")
     public void delete(@PathVariable Long studentId) {
             studentService.deleteStudent(studentId);
+    }
+
+    @GetMapping("/graduate")
+    public List<StudentDto> getGraduatedStdents(){
+        return getAllStudents().stream().filter(StudentDto::getGraduate).collect(Collectors.toList());
     }
     @PatchMapping("/{studentId}/graduate")
     public void patch(@PathVariable Long studentId){
