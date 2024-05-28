@@ -15,6 +15,7 @@ public class StudentDto {
     private LocalDate birthDate;
     private Double score;
     private Integer course;
+    private Boolean isGraduate;
     private Enum<Mark> mark;
 
     public StudentDto(Long id, String name, Double score) {
@@ -23,7 +24,7 @@ public class StudentDto {
         this.score = score;
     }
 
-    public StudentDto(Long id ,String name, String surname, String birthDate , Double score, Integer course) {
+    public StudentDto(Long id ,String name, String surname, String birthDate , Double score, Integer course , Boolean isGraduate) {
         this.name = name;
         this.surname = surname;
 
@@ -34,7 +35,11 @@ public class StudentDto {
         if(score != null){
             this.mark = Mark.getMarkByScore(score);
         }
-
+        if(isGraduate != null){
+            this.isGraduate = isGraduate;
+        }else{
+            this.isGraduate = false;
+        }
         this.score = score;
         this.course = course;
     }
@@ -43,10 +48,17 @@ public class StudentDto {
     }
 
 
+    public Boolean getGraduate() {
+        return isGraduate;
+    }
+
+    public void setGraduate(Boolean graduate) {
+        isGraduate = graduate;
+    }
+
     public Enum<Mark> getMark() {
         return mark;
     }
-
     public void setMark(Enum<Mark> mark) {
         this.mark = mark;
     }

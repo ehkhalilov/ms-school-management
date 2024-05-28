@@ -51,4 +51,10 @@ public class StudentService {
     }
 
 
+    public void graduateStudent(Long studentId) {
+        StudentDto currentStudent = getStudent(studentId);
+        currentStudent.setGraduate(true);
+        saveStudent(currentStudent);
+    }
+
 }

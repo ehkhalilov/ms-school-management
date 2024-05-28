@@ -17,17 +17,23 @@ public class StudentEntity {
 //    @Transient
     private LocalDate birthDate;
     private Integer course;
+    private boolean isGraduate;
 
     public StudentEntity() {
     }
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course) {
+    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course , Boolean isGraduate) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.score = score;
         this.birthDate = birthDate;
         this.course = course;
+        if(isGraduate == null){
+            this.isGraduate = false;
+        }else{
+            this.isGraduate = isGraduate;
+        }
     }
 
     public StudentEntity(String name, String surname, LocalDate birthDate , Double score, Integer course) {
@@ -36,6 +42,14 @@ public class StudentEntity {
         this.birthDate = birthDate;
         this.score = score;
         this.course = course;
+    }
+
+    public boolean isGraduate() {
+        return isGraduate;
+    }
+
+    public void setGraduate(boolean graduate) {
+        isGraduate = graduate;
     }
 
     public Long getId() {
