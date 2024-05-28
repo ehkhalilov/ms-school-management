@@ -3,7 +3,7 @@ package com.example.schoolmanagement.dao.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-
+//test
 @Entity
 @Table(name = "students")
 public class StudentEntity {
