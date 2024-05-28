@@ -15,12 +15,13 @@ public class StudentEntity {
     private Double score;
 
 //    @Column(name = "isGraduate")
-    private boolean isGraduate;
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isGraduate;
 
     public StudentEntity() {
     }
 
-    public StudentEntity(Long studentid, String name, String surname, boolean isGraduate,Double score) {
+    public StudentEntity(Long studentid, String name, String surname, Boolean isGraduate,Double score) {
         this.studentid = studentid;
         this.name = name;
         this.surname = surname;

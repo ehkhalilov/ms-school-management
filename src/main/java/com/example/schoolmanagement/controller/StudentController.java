@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
 
+
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
@@ -34,8 +35,8 @@ public class StudentController {
     }
 
     @PatchMapping("/editgraduate/{studentId}")
-    public void editGraduate(@PathVariable Long studentId,@RequestBody StudentSaveDto studentSaveDto){
-        studentService.editGraduate(studentId,studentSaveDto);
+    public void editGraduate(@PathVariable Long studentId){
+        studentService.editGraduate(studentId);
     }
     @PostMapping
     public void postStudent(@RequestBody StudentSaveDto studentSaveDto){

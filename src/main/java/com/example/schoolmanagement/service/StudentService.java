@@ -59,7 +59,7 @@ public class StudentService {
 
     }
 
-    public void editGraduate(Long studentId,StudentSaveDto studentSaveDto){
+    public void editGraduate(Long studentId){
 
         Optional<StudentEntity> studentEntity = studentRepository.findById(studentId);
 
@@ -67,7 +67,7 @@ public class StudentService {
 
             StudentEntity studentEntity1 = studentEntity.get();
 
-            studentEntity1.setGraduate(studentSaveDto.isGraduate());
+            studentEntity1.setGraduate(!(studentEntity1.isGraduate()));
 
             studentRepository.save(studentEntity1);
 
