@@ -1,28 +1,34 @@
 package com.example.schoolmanagement.model;
 
+import com.example.schoolmanagement.enums.Mark;
+
 import java.time.LocalDate;
 
-public class StudentDto {
+/**
+ * @author: nijataghayev
+ */
+public class StudentWithMarkDto {
     private Long id;
     private String name;
     private String surname;
     private Double score;
     private LocalDate birthDate;
     private Integer course;
-    private Boolean isGraduated;
+    private Boolean graduated;
+    private Mark mark;
 
-
-    public StudentDto() {
+    public StudentWithMarkDto() {
     }
 
-    public StudentDto(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course, Boolean isGraduated) {
+    public StudentWithMarkDto(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course, Boolean graduated, Mark mark) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.score = score;
         this.birthDate = birthDate;
         this.course = course;
-        this.isGraduated = isGraduated;
+        this.graduated = graduated;
+        this.mark = mark;
     }
 
     public Long getId() {
@@ -74,23 +80,32 @@ public class StudentDto {
     }
 
     public Boolean getGraduated() {
-        return isGraduated = false;
+        return graduated;
     }
 
     public void setGraduated(Boolean graduated) {
-        isGraduated = graduated;
+        this.graduated = graduated;
+    }
+
+    public Mark getMark() {
+        return mark;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
     }
 
     @Override
     public String toString() {
-        return "StudentDto{" +
+        return "StudentWithMarkDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", score=" + score +
                 ", birthDate=" + birthDate +
                 ", course=" + course +
-                ", isGraduated=" + isGraduated +
+                ", graduated=" + graduated +
+                ", mark=" + mark +
                 '}';
     }
 }

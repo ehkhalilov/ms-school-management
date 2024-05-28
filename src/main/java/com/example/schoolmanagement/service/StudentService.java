@@ -4,6 +4,7 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentWithMarkDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,20 +19,20 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
-    public List<StudentDto> getAllStudents() {
-        List<StudentEntity> studentEntityList = studentRepository.findByIsGraduatedFalse();
+    public List<StudentWithMarkDto> getAllStudents() {
+        List<StudentEntity> studentEntityList = studentRepository.findAll();
 
         return studentEntityList.stream()
-                .map(studentMapper::mapToDto)
+                .map(studentMapper::toDto)
                 .toList();
     }
 
-    public StudentDto getStudent(Long customerId) {
+    public StudentWithMarkDto getStudent(Long customerId) {
         var studentEntity = studentRepository
                 .findById(customerId)
                 .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
 
-        return studentMapper.mapToDto(studentEntity);
+        return studentMapper.toDto(studentEntity);
     }
 
     public void saveStudent(StudentDto studentDto) {
