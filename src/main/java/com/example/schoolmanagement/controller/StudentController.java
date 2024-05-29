@@ -3,6 +3,7 @@ package com.example.schoolmanagement.controller;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentWithMarkDto;
 import com.example.schoolmanagement.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,13 +18,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/students")
+@RequiredArgsConstructor
 public class StudentController {
 
     private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GetMapping
     public List<StudentWithMarkDto> getAllStudents() {
@@ -52,6 +50,6 @@ public class StudentController {
 
     @PatchMapping("/{studentId}")
     public void graduatedStudent(@PathVariable Long studentId){
-        studentService.gruatedStudent(studentId);
+        studentService.graduatedStudent(studentId);
     }
 }
