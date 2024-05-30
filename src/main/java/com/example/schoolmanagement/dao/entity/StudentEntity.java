@@ -1,11 +1,20 @@
 package com.example.schoolmanagement.dao.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
 //test
 @Entity
 @Table(name = "students")
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +26,7 @@ public class StudentEntity {
 //    @Transient
     private LocalDate birthDate;
     private Integer course;
-    private boolean isGraduate;
+    private boolean graduate;
 
     public StudentEntity() {
     }
@@ -29,86 +38,7 @@ public class StudentEntity {
         this.score = score;
         this.birthDate = birthDate;
         this.course = course;
-        if(isGraduate == null){
-            this.isGraduate = false;
-        }else{
-            this.isGraduate = isGraduate;
-        }
+        this.graduate = Objects.requireNonNullElse(isGraduate, false);
     }
 
-    public StudentEntity(String name, String surname, LocalDate birthDate , Double score, Integer course) {
-        this.name = name;
-        this.surname = surname;
-        this.birthDate = birthDate;
-        this.score = score;
-        this.course = course;
-    }
-
-    public boolean isGraduate() {
-        return isGraduate;
-    }
-
-    public void setGraduate(boolean graduate) {
-        isGraduate = graduate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Integer getCourse() {
-        return course;
-    }
-
-    public void setCourse(Integer course) {
-        this.course = course;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", score=" + score +
-                ", birthDate=" + birthDate +
-                ", course=" + course +
-                '}';
-    }
 }

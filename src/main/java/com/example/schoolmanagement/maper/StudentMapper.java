@@ -14,7 +14,7 @@ public abstract class StudentMapper {
 
 
     @Mapping(target = "mark", expression = "java(Mark.getMarkByScore( studentEntity.getScore() ))")
-//    @Mapping(target = "mark", ignore = true)
+//    @Mapping(target = "getMark()", ignore = true)
     public abstract StudentDto mapToDto(StudentEntity studentEntity);
 
     public abstract StudentEntity mapToEntity(StudentDto studentDto);
