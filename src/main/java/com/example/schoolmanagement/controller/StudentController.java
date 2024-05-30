@@ -44,7 +44,7 @@ public class StudentController {
 
     @GetMapping("/graduate")
     public List<StudentDto> getGraduatedStdents(){
-        return getAllStudents().stream().filter(StudentDto::getGraduate).collect(Collectors.toList());
+        return studentService.getGraduatedStudents();
     }
     @PatchMapping("/{studentId}/graduate")
     public void patch(@PathVariable Long studentId){

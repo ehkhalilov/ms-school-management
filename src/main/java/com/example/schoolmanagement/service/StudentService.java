@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -64,6 +65,12 @@ public class StudentService {
         StudentDto currentStudent = getStudent(studentId);
         currentStudent.setGraduate( !currentStudent.getGraduate() );
         saveStudent(currentStudent);
+    }
+
+
+    public List<StudentDto> getGraduatedStudents(){
+        List<StudentDto> list = getAllStudents().stream().filter(StudentDto::getGraduate).collect(Collectors.toList());
+        return list ;
     }
 
 }
