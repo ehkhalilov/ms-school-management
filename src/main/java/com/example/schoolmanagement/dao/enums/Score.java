@@ -8,17 +8,17 @@ public enum Score {
             throw new IllegalArgumentException("Score must be between 0 and 100");
         }
         if (score < 50.5) {
-            return Score.F;
+            return F;
         } else if (score < 60.5) {
-            return Score.E;
+            return E;
         } else if (score < 70.5) {
-            return Score.D;
+            return D;
         } else if (score < 80.5) {
-            return Score.C;
+            return C;
         } else if (score < 90.5) {
-            return Score.B;
+            return B;
         } else {
-            return Score.A;
+            return A;
         }
     }
 }
