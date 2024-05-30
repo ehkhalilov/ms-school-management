@@ -4,11 +4,13 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
@@ -19,19 +21,26 @@ public class StudentService {
     }
 
     public List<StudentDto> getAllStudents() {
+        log.info("Action.Log.getAllStudents.start");
         List<StudentEntity> studentEntityList = studentRepository.findAll();
-
-        return studentEntityList.stream()
+        List<StudentDto> studentDtosList = studentEntityList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
+        log.info("Action.Log.getAllStudents.end");
+        return  studentDtosList;
     }
 
     public StudentDto getStudent(Long customerId) {
+        log.info("Action.Log.getStudent(id-> {}).start" , customerId);
         var studentEntity = studentRepository
                 .findById(customerId)
-                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
-
-        return studentMapper.mapToDto(studentEntity);
+                .orElseThrow(() -> {
+                    log.error("Action.Log.getStudent couldn't find particular student");
+                    return new RuntimeException("STUDENT_NOT_FOUND");
+                });
+        var studentDto = studentMapper.mapToDto(studentEntity);
+        log.info("Action.Log.getStudent(id-> {}).end" , customerId);
+        return studentDto;
     }
 
     public void saveStudent(StudentDto studentDto) {
