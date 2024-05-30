@@ -4,49 +4,105 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.StudentFullInfoDto;
+import com.example.schoolmanagement.model.enums.Grade;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
-        this.studentRepository = studentRepository;
-        this.studentMapper = studentMapper;
+    private StudentEntity getStudentByID(Long studentId) {
+        return studentRepository
+                .findById(studentId)
+                .orElseThrow(() -> {
+                    log.error("ActionLog.getStudentByID id={}", studentId);
+                    return new RuntimeException("STUDENT_NOT_FOUND");}
+                );
     }
 
     public List<StudentDto> getAllStudents() {
-        List<StudentEntity> studentEntityList = studentRepository.findAll();
+        log.info("ActionLog.getAllStudents.start");
 
-        return studentEntityList.stream()
+        List<StudentEntity> studentEntityList = studentRepository.findAll();
+        var studentDtoList = studentEntityList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
+        log.info("ActionLog.getAllStudents.end");
+
+        return studentDtoList;
     }
 
     public StudentDto getStudent(Long studentId) {
-        var studentEntity = studentRepository
-                .findById(studentId)
-                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+        log.info("ActionLog.getStudent.start studentId={}", studentId);
+        var studentDto = studentMapper.mapToDto(getStudentByID(studentId));
+        log.info("ActionLog.getStudent.end studentId={}", studentId);
 
-        return studentMapper.mapToDto(studentEntity);
+        return studentDto;
     }
 
     public void saveStudent(StudentDto studentDto) {
+        log.info("ActionLog.saveStudent.start studentDto={}", studentDto);
         studentRepository.save(studentMapper.mapToEntity(studentDto));
+        log.info("ActionLog.saveStudent.end studentDto={}", studentDto);
     }
 
     public void deleteStudent(Long studentId) {
+        log.info("ActionLog.deleteStudent.start studentId={}", studentId);
         studentRepository.deleteById(studentId);
+        log.info("ActionLog.deleteStudent.end studentId={}", studentId);
     }
 
-    public void updateStudent(StudentDto studentDto, Long studentId) {
-        studentRepository.setStudentInfoById(studentDto.getName(),studentDto.getSurname(),
-                studentDto.getScore(), studentDto.getBirthDate(),
-                studentDto.getCourse(), studentId);
+    public void updateStudent(StudentFullInfoDto studentFullInfoDto, Long studentId) {
+        log.info("ActionLog.updateStudent.start studentFullInfoDto={}, studentId={}",
+                studentFullInfoDto, studentId);
+
+        var studentEntity = getStudentByID(studentId);
+
+        studentEntity.setName(studentFullInfoDto.getName());
+        studentEntity.setSurname(studentFullInfoDto.getSurname());
+        studentEntity.setScore(studentFullInfoDto.getScore());
+        studentEntity.setBirthDate(studentFullInfoDto.getBirthDate());
+        studentEntity.setCourse(studentFullInfoDto.getCourse());
+        studentEntity.setGraduated(studentFullInfoDto.getGraduated());
+
+        studentRepository.save(studentEntity);
+
+        log.info("ActionLog.updateStudent.end studentFullInfoDto={}, studentId={}",
+                studentFullInfoDto, studentId);
+    }
+    public String isStudentGraduated(Long studentId) {
+        log.info("ActionLog.getGraduated.start studentId={}", studentId);
+
+        var studentEntity = getStudentByID(studentId);
+        String str = studentEntity.getName() + " "
+                + studentEntity.getSurname() + " is"
+                + (studentEntity.getGraduated()? "" : " not")
+                + " graduated.";
+
+        log.info("ActionLog.getGraduated.end studentId={}", studentId);
+
+        return str;
     }
 
+    public String getStudentGrade(Long studentId) {
+        log.info("ActionLog.getGrade.start studentId={}", studentId);
 
+        var studentEntity = getStudentByID(studentId);
+        String str = studentEntity.getName() + " "
+                + studentEntity.getSurname() + " : "
+                + Grade.convertToGrade(studentEntity.getScore()).toString()
+                + " in " + studentEntity.getCourse() + " course";
+
+        log.info("ActionLog.getGrade.end studentId={}", studentId);
+
+        return str;
+    }
 }
