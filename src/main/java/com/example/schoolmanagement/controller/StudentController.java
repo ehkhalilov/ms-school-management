@@ -4,11 +4,13 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentSaveDto;
 import com.example.schoolmanagement.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -16,9 +18,7 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+
 
     @GetMapping("/{studentName}/{studentSurname}")
     public StudentEntity getNameAndSurname(@PathVariable String studentName,@PathVariable String studentSurname ){
@@ -46,7 +46,7 @@ public class StudentController {
 
 
 
-    @PutMapping("{studentId}")
+    @PutMapping("/{studentId}")
     public void editStudent(@PathVariable Long studentId,@RequestBody StudentDto studentDto){
 
         studentService.updateStudent(studentDto,studentId);
