@@ -4,14 +4,7 @@ import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentFullInfoDto;
 import com.example.schoolmanagement.service.StudentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +32,10 @@ public class StudentController {
     public String getStudentGrade(@PathVariable Long studentId) {
         return studentService.getStudentGrade(studentId);
     }
+    @GetMapping("/graduated_only")
+    public List<StudentDto> getGraduatedStudents() {
+        return studentService.getGraduatedStudents();
+    }
 
     @PostMapping
     public void saveStudent(@RequestBody StudentDto studentDto) {
@@ -53,5 +50,10 @@ public class StudentController {
     @DeleteMapping("/{studentId}")
     public void deleteStudent(@PathVariable Long studentId) {
         studentService.deleteStudent(studentId);
+    }
+    @PatchMapping("/{studentId}/update_is_graduated")
+    public void updateStudentIsGraduated(@PathVariable Long studentId,
+                                         @RequestParam(required = true) Boolean isGraduated) {
+        studentService.updateStudentIsGraduated(studentId, isGraduated);
     }
 }

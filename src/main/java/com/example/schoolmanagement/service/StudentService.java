@@ -105,4 +105,31 @@ public class StudentService {
 
         return str;
     }
+
+    public void updateStudentIsGraduated(Long studentId, Boolean isGraduated) {
+        log.info("ActionLog.updateStudentIsGraduated.start studentId={}", studentId);
+
+        var studentEntity = getStudentByID(studentId);
+        studentEntity.setGraduated(isGraduated);
+
+        studentRepository.save(studentEntity);
+
+        log.info("ActionLog.updateStudentIsGraduated.end studentId={}", studentId);
+    }
+
+    public List<StudentDto> getGraduatedStudents() {
+        log.info("ActionLog.getGraduatedStudents.start");
+
+        List<StudentEntity> studentEntityList = studentRepository.findAll();
+
+        List<StudentDto> graduatedStudentsList = studentEntityList.
+                        stream().
+                        filter(StudentEntity::getGraduated).
+                        map(studentMapper::mapToDto).
+                        toList();
+
+        log.info("ActionLog.getGraduatedStudents.end");
+
+        return graduatedStudentsList;
+    }
 }
