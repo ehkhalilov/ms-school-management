@@ -1,11 +1,15 @@
 package com.example.schoolmanagement.service;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.dao.entity.TaskEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
+import com.example.schoolmanagement.dao.repository.TaskRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
+import com.example.schoolmanagement.maper.TaskMapper;
 import com.example.schoolmanagement.model.Grade;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentWithGradeDto;
+import com.example.schoolmanagement.model.TaskDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -13,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +26,9 @@ public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
+    private final TaskRepository taskRepository;
     private final StudentMapper studentMapper;
+    private final TaskMapper taskMapper;
 
     public List<StudentDto> getAllStudents() {
         log.info("ActionLog.getAllStudents.starts");
@@ -48,15 +55,15 @@ public class StudentService {
 
 
     public void saveStudent(StudentDto studentDto) {
-        log.info("ActionLog.saveStudent.starts");
+        log.info("ActionLog.saveStudent.starts student {}", studentDto);
         try {
-            StudentEntity studentEntity = studentMapper.studentDtoToStudentEntity(studentDto);
+            var studentEntity = studentMapper.mapToEntity(studentDto);
             studentRepository.save(studentEntity);
         } catch (Exception e) {
             logger.error("Error saving student: ", e);
             throw new RuntimeException("Error saving student", e);
         }
-        log.info("ActionLog.saveStudent.ends");
+        log.info("ActionLog.saveStudent.ends student {}", studentDto);
     }
 
     public void deleteStudent(Long studentId) {
@@ -103,6 +110,93 @@ public class StudentService {
         log.info("ActionLog.getStudentWithGrade.ends studentId {}", studentId);
         return studentDto;
     }
+
+    public StudentDto addTask(Long studentId, TaskDto taskDto) {
+        log.info("ActionLog.addTask.starts studentId {}", studentId);
+        StudentEntity studentEntity = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+        TaskEntity taskEntity = taskMapper.taskDtoToTaskEntity(taskDto);
+        taskEntity.setStudent(studentEntity);
+
+        studentEntity.getTasks().add(taskEntity);
+
+        taskRepository.save(taskEntity);
+        studentRepository.save(studentEntity);
+
+        log.info("ActionLog.addTask.ends studentId {}", studentId);
+
+        return studentMapper.studentToStudentDto(studentEntity);
+    }
+
+    public StudentDto assignTask(Long studentId, Long taskId) {
+        StudentEntity studentEntity = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("TASK_NOT_FOUND"));
+
+        taskEntity.setStudent(studentEntity);
+        studentEntity.getTasks().add(taskEntity);
+
+        studentRepository.save(studentEntity);
+
+        return studentMapper.studentToStudentDto(studentEntity);
+
+    }
+
+    public void deleteTaskV1(Long studentId, Long taskId) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+
+        if (student.getTasks() == null || student.getTasks().isEmpty()) {
+            throw new RuntimeException("Student with ID " + studentId + " has no tasks assigned.");
+        }
+
+        TaskEntity taskToRemove = null;
+        for (TaskEntity task : student.getTasks()) {
+            if (Objects.equals(task.getId(), taskId)) {
+                taskToRemove = task;
+                break;
+            }
+        }
+
+        if (taskToRemove == null) {
+            throw new RuntimeException("Task with ID " + taskId + " not found for student with ID " + studentId);
+        }
+
+        student.getTasks().remove(taskToRemove);
+        taskToRemove.setStudent(null);
+        studentRepository.save(student);
+    }
+
+    public void deleteTaskV2(Long studentId, Long taskId) {
+        StudentEntity student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("STUDENT_NOT_FOUND"));
+
+        if (student.getTasks() == null || student.getTasks().isEmpty()) {
+            throw new RuntimeException("Student with ID " + studentId + " has no tasks assigned.");
+        }
+
+        TaskEntity taskToRemove = null;
+        for (TaskEntity task : student.getTasks()) {
+            if (Objects.equals(task.getId(), taskId)) {
+                taskToRemove = task;
+                break;
+            }
+        }
+
+        if (taskToRemove == null) {
+            throw new RuntimeException("Task with ID " + taskId + " not found for student with ID " + studentId);
+        }
+
+        student.getTasks().remove(taskToRemove);
+        taskToRemove.setStudent(null);
+
+        taskRepository.delete(taskToRemove);
+
+        studentRepository.save(student);
+    }
+
 
 
 }
