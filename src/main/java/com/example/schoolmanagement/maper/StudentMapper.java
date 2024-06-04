@@ -1,19 +1,24 @@
 package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.maper.qualifier.StudentQualifier;
 import com.example.schoolmanagement.model.StudentDto;
-import org.springframework.stereotype.Component;
+import com.example.schoolmanagement.model.StudentWithGradeDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class StudentMapper {
+@Mapper(componentModel = "spring", uses = StudentQualifier.class)
+public interface StudentMapper {
+    @Mapping(target = "grade", source = "score", qualifiedByName = "mapScoreToGrade")
+    StudentWithGradeDto toDto(StudentEntity studentEntity);
 
-    public StudentDto mapToDto(StudentEntity studentEntity) {
-        StudentDto studentDto = new StudentDto();
+    void dtoToEntity(@MappingTarget StudentEntity studentEntity, StudentDto studentDto);
 
-        studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
-        studentDto.setScore(studentEntity.getScore());
+    StudentDto studentToStudentDto(StudentEntity studentEntity);
 
-        return studentDto;
-    }
+    //StudentEntity studentDtoToStudentEntity(StudentDto studentDto);
+
+    public abstract StudentEntity mapToEntity(StudentDto studentDto);
+
 }

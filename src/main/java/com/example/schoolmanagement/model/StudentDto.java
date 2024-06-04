@@ -1,49 +1,38 @@
 package com.example.schoolmanagement.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class StudentDto {
     private Long id;
     private String name;
+    private String surname;
+    private LocalDate birthDate;
     private Double score;
+    private Integer course;
+    private Card card;
+    private List<Task> tasks;
 
-    public StudentDto(Long id, String name, Double score) {
-        this.id = id;
-        this.name = name;
-        this.score = score;
+    @Data
+    public static class Card {
+        private Long id;
+        private String cardNumber;
+        private LocalDate expireDate;
     }
 
-    public StudentDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", score=" + score +
-                '}';
+    @Data
+    public static class Task {
+        private Long id;
+        private String title;
     }
 }
