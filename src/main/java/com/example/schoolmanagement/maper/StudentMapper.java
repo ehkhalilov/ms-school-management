@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", imports = {Mark.class})
-public abstract class StudentMapper {
+public abstract class  StudentMapper {
 
     public abstract StudentDto mapToDto(StudentEntity studentEntity);
 

@@ -43,13 +43,28 @@ public class StudentController {
         studentService.updateStudent(studentDto, studentId);
     }
 
+    @PutMapping("/{studentId}/{taskId}")
+    public StudentDto assignTask(@PathVariable Long studentId, @PathVariable Long taskId) {
+        return studentService.assignTask(studentId, taskId);
+    }
+
     @DeleteMapping("/{studentId}")
     public void deleteStudent(@PathVariable Long studentId) {
         studentService.deleteStudent(studentId);
     }
 
+    @DeleteMapping("/{studentId}/{taskId}")
+    public void deleteTask(@PathVariable Long studentId, @PathVariable Long taskId) {
+        studentService.deleteTask(studentId, taskId);
+    }
+
+    @DeleteMapping("/{studentId}/all")
+    public void deleteAllTasks(@PathVariable Long studentId) {
+        studentService.deleteAllTasks(studentId);
+    }
+
     @PatchMapping("/{studentId}")
-    public void graduatedStudent(@PathVariable Long studentId){
+    public void graduatedStudent(@PathVariable Long studentId) {
         studentService.graduatedStudent(studentId);
     }
 }
