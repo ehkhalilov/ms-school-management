@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.model;
 
+import com.example.schoolmanagement.enums.Mark;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * @author: nijataghayev
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto {
+public class StudentWithMarkDto {
     private Long id;
     private String name;
     private String surname;
@@ -18,6 +23,7 @@ public class StudentDto {
     private LocalDate birthDate;
     private Integer course;
     private Boolean graduated;
+    private Mark mark;
     private Card card;
     private List<Task> tasks;
 

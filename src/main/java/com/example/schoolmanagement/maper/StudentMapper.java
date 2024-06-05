@@ -1,35 +1,19 @@
 package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.enums.Mark;
 import com.example.schoolmanagement.model.StudentDto;
-import org.springframework.stereotype.Component;
+import com.example.schoolmanagement.model.StudentWithMarkDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class StudentMapper {
+@Mapper(componentModel = "spring", imports = {Mark.class})
+public abstract class  StudentMapper {
 
-    public StudentDto mapToDto(StudentEntity studentEntity) {
-        StudentDto studentDto = new StudentDto();
+    public abstract StudentDto mapToDto(StudentEntity studentEntity);
 
-        studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
-        studentDto.setScore(studentEntity.getScore());
+    @Mapping(target = "mark", expression = "java(Mark.getMark(studentEntity.getScore()))")
+    public abstract StudentWithMarkDto toDto(StudentEntity studentEntity);
 
-        return studentDto;
-    }
-
-    public StudentEntity mapToEntity(StudentDto studentDto) {
-        StudentEntity studentEntity = new StudentEntity();
-
-        String name = studentDto.getName();
-        if (name != null) {
-            String[] parts = name.split(" ");
-            studentEntity.setName(parts[0]);
-            if (parts.length > 1) {
-                studentEntity.setSurname(parts[1]);
-            }
-        }
-        studentEntity.setScore(studentDto.getScore());
-
-        return studentEntity;
-    }
+    public abstract StudentEntity mapToEntity(StudentDto studentDto);
 }
