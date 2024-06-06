@@ -1,83 +1,61 @@
 package com.example.schoolmanagement.dao.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "students")
 public class StudentEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
-    private Double score;
+    @Column(name = "father_name")
+    private String fatherName;
     @Column(name = "birth_date")
-    @Transient
     private LocalDate birthDate;
-    private Integer course;
+    @Column(name = "is_graduate")
+    private Boolean graduate;
+    private Double score;
 
-    public StudentEntity() {
-    }
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "card_id")
+    private CardEntity cardEntity;
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.score = score;
-        this.birthDate = birthDate;
-        this.course = course;
-    }
+    @OneToMany(mappedBy = "studentEntity", fetch = FetchType.LAZY)
+    private List<TaskEntity> taskEntities;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Integer getCourse() {
-        return course;
-    }
-
-    public void setCourse(Integer course) {
-        this.course = course;
+    @PreRemove
+    private void preRemove() {
+        if (taskEntities != null) {
+            for (TaskEntity task : taskEntities) {
+                task.setStudentEntity(null);
+            }
+        }
     }
 }
