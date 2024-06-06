@@ -2,8 +2,8 @@ package com.example.schoolmanagement.controller;
 
 import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.model.Response;
-import com.example.schoolmanagement.model.StudentGetDto;
-import com.example.schoolmanagement.model.StudentSaveDto;
+import com.example.schoolmanagement.model.get.StudentGetDto;
+import com.example.schoolmanagement.model.set.StudentSetDto;
 import com.example.schoolmanagement.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,25 +25,19 @@ public class StudentController {
     }
 
     @GetMapping("/getStudent/{studentId}")
-    public ResponseEntity<StudentGetDto> getStudent(@PathVariable Long studentId) {
-        try {
-            return ResponseEntity.ok(studentService.getStudent(studentId));
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .header("Error-Message", e.getMessage())
-                    .build();
-        }
+    public StudentGetDto getStudent(@PathVariable Long studentId) {
+        return studentService.getStudent(studentId);
     }
 
     @PostMapping("/saveStudent")
-    public void saveStudent(@RequestBody StudentSaveDto studentSaveDto) {
-        studentService.saveStudent(studentSaveDto);
+    public void saveStudent(@RequestBody StudentSetDto studentSetDto) {
+        studentService.saveStudent(studentSetDto);
     }
 
     @PutMapping("/update/{studentId}")
-    public ResponseEntity<Response<?>> updateStudentById(@PathVariable Long studentId, @RequestBody StudentSaveDto studentSaveDto) {
+    public ResponseEntity<Response<?>> updateStudentById(@PathVariable Long studentId, @RequestBody StudentSetDto studentSetDto) {
         try {
-            studentService.updateStudent(studentSaveDto, studentId);
+            studentService.updateStudent(studentSetDto, studentId);
             return ResponseEntity.ok(new Response<>("Successfully"));
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
@@ -55,7 +49,7 @@ public class StudentController {
         try {
             studentService.deleteStudent(studentId);
             return ResponseEntity.ok(new Response<>("Student is deleted successfully"));
-        }catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response<>(e.getMessage(), null));
         }
     }
