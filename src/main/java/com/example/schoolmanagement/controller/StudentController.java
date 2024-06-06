@@ -34,12 +34,12 @@ public class StudentController {
     }
 
     @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
+    public void saveStudent(@RequestBody StudentDto studentDto) {
         studentService.saveStudent(studentDto);
     }
 
     @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
+    public void updateStudent(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
         studentService.updateStudent(studentDto, studentId);
     }
 
