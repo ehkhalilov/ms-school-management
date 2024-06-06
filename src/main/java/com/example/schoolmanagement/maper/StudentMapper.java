@@ -2,18 +2,16 @@ package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.model.StudentDto;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
-public class StudentMapper {
+@Mapper(componentModel = "spring")
+public abstract class StudentMapper {
 
-    public StudentDto mapToDto(StudentEntity studentEntity) {
-        StudentDto studentDto = new StudentDto();
+    public abstract StudentDto mapToDto(StudentEntity studentEntity);
 
-        studentDto.setId(studentEntity.getId());
-        studentDto.setName(studentEntity.getName() + " " + studentEntity.getSurname());
-        studentDto.setScore(studentEntity.getScore());
-
-        return studentDto;
-    }
+    public abstract StudentEntity mapToEntity(StudentDto studentDto);
 }

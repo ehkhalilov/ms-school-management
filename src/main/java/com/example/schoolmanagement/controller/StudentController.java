@@ -33,18 +33,23 @@ public class StudentController {
         return studentService.getStudent(studentId);
     }
 
+    @PostMapping("{studentId}/assign/{taskId}")
+    public void assignTask(@PathVariable Long studentId,@PathVariable Long taskId){
+        studentService.assignTask(studentId,taskId);
+    }
+
     @PostMapping
-    public void post(@RequestBody StudentDto studentDto) {
+    public void saveStudent(@RequestBody StudentDto studentDto) {
         studentService.saveStudent(studentDto);
     }
 
     @PutMapping("/{studentId}")
-    public void put(@PathVariable Integer studentId, @RequestBody StudentDto studentDto) {
+    public void updateStudent(@PathVariable Long studentId, @RequestBody StudentDto studentDto) {
         studentService.updateStudent(studentDto, studentId);
     }
 
     @DeleteMapping("/{studentId}")
-    public void delete(@PathVariable Integer studentId) {
+    public void deleteStudent(@PathVariable Long studentId) {
         studentService.deleteStudent(studentId);
     }
 }
