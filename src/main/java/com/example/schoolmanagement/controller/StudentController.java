@@ -5,6 +5,7 @@ import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentWithGradeDto;
 import com.example.schoolmanagement.model.TaskDto;
 import com.example.schoolmanagement.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,14 +21,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/students")
+@RequiredArgsConstructor
 public class StudentController {
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
-
     private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GetMapping
     public List<StudentDto> getAllStudents() {
@@ -67,6 +64,7 @@ public class StudentController {
     public void deleteTaskV1(@PathVariable Long studentID, @PathVariable Long taskId) {
         studentService.deleteTaskV1(studentID, taskId);
     }
+
     @DeleteMapping("/{studentID}/{taskId}/v2")
     public void deleteTaskV2(@PathVariable Long studentID, @PathVariable Long taskId) {
         studentService.deleteTaskV2(studentID, taskId);

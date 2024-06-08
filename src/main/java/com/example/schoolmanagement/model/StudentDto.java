@@ -22,6 +22,7 @@ public class StudentDto {
     private Integer course;
     private Card card;
     private List<Task> tasks;
+    private List<TeacherDto> teachers;
 
     @Data
     public static class Card {
@@ -34,5 +35,14 @@ public class StudentDto {
     public static class Task {
         private Long id;
         private String title;
+    }
+
+    @Data
+    public static class Teacher {
+        private Long id;
+        private String name;
+        private String surname;
+        private LocalDate birthDate;
+        private SUBJECT subject;
     }
 }
