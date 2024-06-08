@@ -19,8 +19,6 @@ public class TeacherDto {
     private List<StudentDto> students;
 
     @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
     public static class StudentDto {
         private Long id;
         private String name;
@@ -28,6 +26,5 @@ public class TeacherDto {
         private LocalDate birthDate;
         private Double score;
         private Integer course;
-
     }
 }

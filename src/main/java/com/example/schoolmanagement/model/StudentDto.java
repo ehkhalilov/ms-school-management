@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,14 +34,5 @@ public class StudentDto {
     public static class Task {
         private Long id;
         private String title;
-    }
-
-    @Data
-    public static class Teacher {
-        private Long id;
-        private String name;
-        private String surname;
-        private LocalDate birthDate;
-        private SUBJECT subject;
     }
 }

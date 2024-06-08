@@ -38,16 +38,6 @@ public class TeacherService {
                     return new RuntimeException("Teacher_NOT_FOUND");
                 });
         var teacherDto = teacherMapper.teacherToTeacherDto(teacherEntity);
-        teacherDto.setStudents(teacherEntity.getStudents().stream()
-                .map(student -> new TeacherDto.StudentDto(
-                        student.getId(),
-                        student.getName(),
-                        student.getSurname(),
-                        student.getBirthDate(),
-                        student.getScore(),
-                        student.getCourse()
-                ))
-                .toList());
         log.info("ActionLog.getTeacher.ends teacherId {}", teacherId);
         return teacherDto;
     }

@@ -17,7 +17,7 @@ public interface StudentMapper {
 
     StudentDto studentToStudentDto(StudentEntity studentEntity);
 
-    //StudentEntity studentDtoToStudentEntity(StudentDto studentDto);
+    StudentEntity studentDtoToStudentEntity(StudentDto studentDto);
 
     public abstract StudentEntity mapToEntity(StudentDto studentDto);
 
