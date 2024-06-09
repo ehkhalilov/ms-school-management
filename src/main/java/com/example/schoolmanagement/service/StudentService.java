@@ -5,7 +5,6 @@ import com.example.schoolmanagement.dao.entity.TaskEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.dao.repository.TaskRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
-import com.example.schoolmanagement.maper.TaskMapper;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentWithMarkDto;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final TaskRepository taskRepository;
     private final StudentMapper studentMapper;
-    private final TaskMapper taskMapper;
 
     public List<StudentWithMarkDto> getAllStudents() {
         log.info("ActionLog.getAllStudent.start");
@@ -34,16 +32,16 @@ public class StudentService {
         return studentWithMarkDtos;
     }
 
-    public StudentWithMarkDto getStudent(Long customerId) {
-        log.info("ActionLog.getStudent.start customerId {}", customerId);
+    public StudentWithMarkDto getStudent(Long studentId) {
+        log.info("ActionLog.getStudent.start studentId {}", studentId);
         var studentEntity = studentRepository
-                .findById(customerId)
+                .findById(studentId)
                 .orElseThrow(() -> {
-                    log.error("ActionLog.getStudent.id {} not found", customerId);
+                    log.error("ActionLog.getStudent.id {} not found", studentId);
                     return new RuntimeException("STUDENT_NOT_FOUND");
                 });
         var studentWithMarkDto = studentMapper.toDto(studentEntity);
-        log.info("ActionLog.getStudent.end customerId {}", customerId);
+        log.info("ActionLog.getStudent.end studentId {}", studentId);
 
         return studentWithMarkDto;
     }
@@ -56,10 +54,10 @@ public class StudentService {
         log.debug("ActionLog.saveStudent.end student {}", studentDto);
     }
 
-    public void deleteStudent(Long customerId) {
-        StudentEntity studentEntity = studentRepository.findById(customerId)
+    public void deleteStudent(Long studentId) {
+        StudentEntity studentEntity = studentRepository.findById(studentId)
                 .orElseThrow(() -> {
-                    log.error("ActionLog.deleteStudent.id {} not found", customerId);
+                    log.error("ActionLog.deleteStudent.id {} not found", studentId);
                     return new RuntimeException("STUDENT_NOT_FOUND");
                 });
         studentRepository.delete(studentEntity);
@@ -114,10 +112,10 @@ public class StudentService {
         log.info("ActionLog.deleteAllTasks.end studentId {}", studentId);
     }
 
-    public void updateStudent(StudentDto studentDto, Long customerId) {
-        StudentEntity existingStudent = studentRepository.findById(customerId)
+    public void updateStudent(StudentDto studentDto, Long studentId) {
+        StudentEntity existingStudent = studentRepository.findById(studentId)
                 .orElseThrow(() -> {
-                    log.error("ActionLog.updateStudent.id {} not found", customerId);
+                    log.error("ActionLog.updateStudent.id {} not found", studentId);
                     return new RuntimeException("STUDENT_NOT_FOUND");
                 });
 
@@ -131,10 +129,10 @@ public class StudentService {
         studentRepository.save(existingStudent);
     }
 
-    public void graduatedStudent(Long customerId) {
-        StudentEntity studentEntity = studentRepository.findById(customerId)
+    public void graduatedStudent(Long studentId) {
+        StudentEntity studentEntity = studentRepository.findById(studentId)
                 .orElseThrow(() -> {
-                    log.error("ActionLog.graduatedStudent.id {} not found", customerId);
+                    log.error("ActionLog.graduatedStudent.id {} not found", studentId);
                     return new RuntimeException("STUDENT_NOT_FOUND");
                 });
 
