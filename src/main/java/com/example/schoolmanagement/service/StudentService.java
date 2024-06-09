@@ -3,7 +3,8 @@ package com.example.schoolmanagement.service;
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.maper.StudentMapper;
-import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.student.StudentDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
-        this.studentRepository = studentRepository;
-        this.studentMapper = studentMapper;
-    }
 
     public List<StudentDto> getAllStudents() {
         log.info("Action.Log.getAllStudents.start");

@@ -2,19 +2,20 @@ package com.example.schoolmanagement.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 //test
+
 @Entity
 @Table(name = "students")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
-
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,22 +24,24 @@ public class StudentEntity {
     private String surname;
     private Double score;
     @Column(name = "birth_date")
-//    @Transient
     private LocalDate birthDate;
     private Integer course;
     private boolean graduate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
+    private CardEntity card;
 
-    public StudentEntity() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentEntity that = (StudentEntity) o;
+        return graduate == that.graduate && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(score, that.score) && Objects.equals(birthDate, that.birthDate) && Objects.equals(course, that.course) && Objects.equals(card, that.card);
     }
 
-    public StudentEntity(Long id, String name, String surname, Double score, LocalDate birthDate, Integer course , Boolean isGraduate) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.score = score;
-        this.birthDate = birthDate;
-        this.course = course;
-        this.graduate = Objects.requireNonNullElse(isGraduate, false);
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, score, birthDate, course, graduate, card);
     }
-
 }
+

@@ -1,14 +1,15 @@
 package com.example.schoolmanagement.controller;
 
-import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.student.StudentDto;
 import com.example.schoolmanagement.service.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
+@Slf4j
 public class StudentController {
 
     private final StudentService studentService;
@@ -29,7 +30,9 @@ public class StudentController {
 
     @PostMapping
     public void post(@RequestBody StudentDto studentDto) {
+        log.info("Action.saveStudent.start student {}" , studentDto);
         studentService.saveStudent(studentDto);
+        log.info("Action.saveStudent.start student {}" , studentDto);
     }
 
     @PutMapping("/{studentId}")

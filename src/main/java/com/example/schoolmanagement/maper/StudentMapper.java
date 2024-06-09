@@ -1,12 +1,11 @@
 package com.example.schoolmanagement.maper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
-import com.example.schoolmanagement.model.StudentDto;
+import com.example.schoolmanagement.model.student.StudentDto;
 import com.example.schoolmanagement.model.enums.Mark;
+import com.example.schoolmanagement.model.student.StudentWithoutCardDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.MapperConfig;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 
 
 @Mapper(componentModel = "spring", imports = Mark.class)
@@ -14,8 +13,11 @@ public abstract class StudentMapper {
 
 
     @Mapping(target = "mark", expression = "java(Mark.getMarkByScore( studentEntity.getScore() ))")
-//    @Mapping(target = "getMark()", ignore = true)
     public abstract StudentDto mapToDto(StudentEntity studentEntity);
+
+    @Mapping(target = "mark", expression = "java(Mark.getMarkByScore( studentEntity.getScore() ))")
+    public abstract StudentWithoutCardDto mapToStudentWithoutCardDto(StudentEntity studentEntity);
+
 
     public abstract StudentEntity mapToEntity(StudentDto studentDto);
 }
