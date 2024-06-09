@@ -33,9 +33,14 @@ public class StudentController {
         return studentService.getStudent(studentId);
     }
 
-    @PostMapping("{studentId}/assign/{taskId}")
+    @PutMapping("{studentId}/assignTask/{taskId}")
     public void assignTask(@PathVariable Long studentId,@PathVariable Long taskId){
         studentService.assignTask(studentId,taskId);
+    }
+
+    @DeleteMapping("{studentId}/deleteTask/{taskId}")
+    public void deleteTaskFromStudent(@PathVariable Long studentId,@PathVariable Long taskId){
+        studentService.deleteTaskFromStudent(studentId,taskId);
     }
 
     @PostMapping

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
     public List<StudentDto> getAllStudents() {
         List<StudentEntity> studentEntityList = studentRepository.findAll();
@@ -65,4 +67,13 @@ public class StudentService {
         studentRepository.save(studentEntity);
     }
 
+    public void deleteTaskFromStudent(Long studentId, Long taskId){
+        var studentEntity = studentRepository.findById(studentId).orElseThrow();
+        var taskEntity = taskRepository.findById(taskId).orElseThrow();
+        var studentTasks = studentEntity.getTasks().stream().filter(task -> task.getId().equals(taskId)).collect(Collectors.toList());
+        studentEntity.setTasks(studentTasks);
+        taskEntity.setStudent(null);
+        studentRepository.save(studentEntity);
+        taskRepository.save(taskEntity);
+    }
 }

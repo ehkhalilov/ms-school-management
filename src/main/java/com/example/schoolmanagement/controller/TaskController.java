@@ -1,9 +1,6 @@
 package com.example.schoolmanagement.controller;
 
-import com.example.schoolmanagement.dao.entity.StudentEntity;
-import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.TaskDto;
-import com.example.schoolmanagement.service.StudentService;
 import com.example.schoolmanagement.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
