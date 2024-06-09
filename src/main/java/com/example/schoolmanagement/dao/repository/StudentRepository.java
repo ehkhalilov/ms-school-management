@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
-    @Query(value = "SELECT * FROM students WHERE is_graduate = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM students WHERE graduate = ?1", nativeQuery = true)
     List<StudentEntity> getStudentsByGraduate(Boolean graduate);
 
 }

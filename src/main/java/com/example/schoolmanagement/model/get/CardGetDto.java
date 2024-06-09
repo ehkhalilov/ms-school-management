@@ -24,7 +24,7 @@ public class CardGetDto {
         private String name;
         private String surname;
         private LocalDate birthDate;
-        private Boolean isGraduate;
+        private Boolean graduate;
         private Score score;
     }
 

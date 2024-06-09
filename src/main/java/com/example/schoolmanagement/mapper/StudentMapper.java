@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
-@Mapper(componentModel = "spring", imports = {Score.class, CardGetDto.class})
+@Mapper(componentModel = "spring", imports = {Score.class})
 public abstract class StudentMapper {
 
     @Mapping(target = "score", expression = "java(Score.getScore(studentEntity.getScore()))")
@@ -25,5 +25,4 @@ public abstract class StudentMapper {
             StudentSetDto studentSetDto, @MappingTarget StudentEntity studentEntity);
 
     public abstract CardGetDto.Student mapToStudent(StudentGetDto studentGetDto);
-
 }

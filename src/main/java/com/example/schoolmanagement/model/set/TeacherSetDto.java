@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskSetDto {
-    private String title;
-    private String description;
-    private LocalDate dueDate;
+public class TeacherSetDto {
+    private String name;
+    private String surname;
+    private LocalDate birthDate;
 }
