@@ -28,7 +28,7 @@ public class StudentEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
     private Integer course;
-    @Column(name="is_graduated")
+    @Column(name = "is_graduated")
     private Boolean graduated;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
@@ -36,9 +36,14 @@ public class StudentEntity {
     @OneToMany(
             mappedBy = "student",
             cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY
-    )
+            fetch = FetchType.LAZY)
     private List<TaskEntity> tasks;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "students_teachers",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+    private List<TeacherEntity> teachers;
 
     public StudentEntity(String name, String surname, Double score, LocalDate birthDate, Integer course) {
     }

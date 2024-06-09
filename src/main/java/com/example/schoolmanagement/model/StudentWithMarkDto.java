@@ -26,6 +26,7 @@ public class StudentWithMarkDto {
     private Mark mark;
     private Card card;
     private List<Task> tasks;
+    private List<StudentDto.Teacher> teachers;
 
     @Data
     public static class Card {
@@ -38,5 +39,14 @@ public class StudentWithMarkDto {
     public static class Task{
         private Long id;
         private String title;
+    }
+
+    @Data
+    public static class Teacher {
+        private Long id;
+        private String name;
+        private String surname;
+        private LocalDate birthDate;
+        private String subject;
     }
 }

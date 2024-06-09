@@ -58,7 +58,7 @@ public class StudentController {
         studentService.deleteTask(studentId, taskId);
     }
 
-    @DeleteMapping("/{studentId}/all")
+    @DeleteMapping("/{studentId}/alltasks")
     public void deleteAllTasks(@PathVariable Long studentId) {
         studentService.deleteAllTasks(studentId);
     }

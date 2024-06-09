@@ -20,6 +20,7 @@ public class StudentDto {
     private Boolean graduated;
     private Card card;
     private List<Task> tasks;
+    private List<Teacher> teachers;
 
     @Data
     public static class Card {
@@ -29,8 +30,17 @@ public class StudentDto {
     }
 
     @Data
-    public static class Task{
+    public static class Task {
         private Long id;
         private String title;
+    }
+
+    @Data
+    public static class Teacher {
+        private Long id;
+        private String name;
+        private String surname;
+        private LocalDate birthDate;
+        private String subject;
     }
 }
