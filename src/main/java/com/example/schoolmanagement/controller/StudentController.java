@@ -70,4 +70,9 @@ public class StudentController {
         log.info("Action.graduateStudent.end  studentId : {}" , studentId);
     }
 
+    @GetMapping("/teacher/{teacherID}")
+    public List<StudentDto> getStudentsByTeacher(@PathVariable String teacherID){
+        return studentService.getStudentsByTeacher(teacherID);
+    }
+
 }

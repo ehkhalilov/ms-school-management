@@ -7,6 +7,7 @@ import com.example.schoolmanagement.model.student.StudentDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +63,12 @@ public class StudentService {
 
     public List<StudentDto> getGraduatedStudents(){
         return getAllStudents().stream().filter(StudentDto::getGraduate).collect(Collectors.toList());
+    }
+
+    public List<StudentDto> getStudentsByTeacher(String teacherID){
+        var teachersEntity = studentRepository.findByTeachersId(teacherID);
+
+        return teachersEntity.stream().map(studentMapper::mapToDto).toList();
     }
 
 }

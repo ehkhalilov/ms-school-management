@@ -15,7 +15,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,17 +34,25 @@ public class StudentEntity {
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
     private List<TaskEntity> task;
 
+    @ManyToMany
+    @JoinTable(
+            name = "student_teacher",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id")
+    )
+    private List<TeacherEntity> teachers;
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentEntity that = (StudentEntity) o;
-        return graduate == that.graduate && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(score, that.score) && Objects.equals(birthDate, that.birthDate) && Objects.equals(course, that.course) && Objects.equals(card, that.card) && Objects.equals(task, that.task);
+        return graduate == that.graduate && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(score, that.score) && Objects.equals(birthDate, that.birthDate) && Objects.equals(course, that.course) && Objects.equals(card, that.card) && Objects.equals(task, that.task) && Objects.equals(teachers, that.teachers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, score, birthDate, course, graduate, card, task);
+        return Objects.hash(id, name, surname, score, birthDate, course, graduate, card, task, teachers);
     }
 }
