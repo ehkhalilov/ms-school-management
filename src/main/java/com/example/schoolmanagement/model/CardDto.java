@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class CardDto {
     private Long id;
+    @Schema(description = "This is number of card", required = true)
     private String cardNumber;
+    @Schema(description = "This is expire date of card", required = true)
     private LocalDate expireDate;
     private Student student;
 

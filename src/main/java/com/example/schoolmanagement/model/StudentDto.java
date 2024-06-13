@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentDto {
     private Long id;
+    @Schema(description = "This is name of student", required = true)
     private String name;
+    @Schema(description = "This is surname of student", required = true)
     private String surname;
+    @Schema(description = "This is score of student", required = true)
     private Double score;
+    @Schema(description = "This is birthdate of student", required = true)
     private LocalDate birthDate;
+    @Schema(description = "This is course of student")
     private Integer course;
     private Boolean graduated;
     private Card card;

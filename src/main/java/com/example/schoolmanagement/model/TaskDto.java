@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TaskDto {
     private Long id;
+    @Schema(description = "This is title of task")
     private String title;
     private Student student;
 

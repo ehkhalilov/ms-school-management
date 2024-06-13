@@ -37,5 +37,4 @@ public class TeacherEntity {
     private Subject subject;
     @ManyToMany(mappedBy = "teachers", cascade = CascadeType.ALL)
     public List<StudentEntity> students;
-
 }

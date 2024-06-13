@@ -1,6 +1,7 @@
 package com.example.schoolmanagement.model;
 
 import com.example.schoolmanagement.enums.Mark;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,21 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentWithMarkDto {
     private Long id;
+    @Schema(description = "This is name of student", required = true)
     private String name;
+    @Schema(description = "This is surname of student", required = true)
     private String surname;
+    @Schema(description = "This is score of student", required = true)
     private Double score;
+    @Schema(description = "This is birthdate of student", required = true)
     private LocalDate birthDate;
+    @Schema(description = "This is course of student")
     private Integer course;
     private Boolean graduated;
     private Mark mark;
     private Card card;
     private List<Task> tasks;
-    private List<StudentDto.Teacher> teachers;
+    private List<Teacher> teachers;
 
     @Data
     public static class Card {
@@ -36,7 +42,7 @@ public class StudentWithMarkDto {
     }
 
     @Data
-    public static class Task{
+    public static class Task {
         private Long id;
         private String title;
     }

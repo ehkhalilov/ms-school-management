@@ -4,6 +4,7 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.entity.TaskEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.dao.repository.TaskRepository;
+import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.maper.TaskMapper;
 import com.example.schoolmanagement.model.TaskDto;
 import lombok.RequiredArgsConstructor;
@@ -45,10 +46,9 @@ public class TaskService {
     public void updateTask(TaskDto taskDto, Long taskId) {
         log.info("ActionLog.updateTask.start taskId {}", taskId);
         TaskEntity existingTask = taskRepository.findById(taskId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.assingTask.id {} not found", taskId);
-                    return new RuntimeException("TASK_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "TASK_NOT_FOUND",
+                        String.format("ActionLog.updateTask.id %d not found", taskId)));
         TaskEntity updateTask = taskMapper.mapToEntity(taskDto);
         existingTask.setTitle(updateTask.getTitle());
 
@@ -57,10 +57,9 @@ public class TaskService {
             if (taskDto.getStudent().getId() != null) {
                 Long studentId = taskDto.getStudent().getId();
                 studentEntity = studentRepository.findById(studentId)
-                        .orElseThrow(() -> {
-                            log.error("ActionLog.updateStudent.id {} not found", studentId);
-                            return new RuntimeException("TASK_NOT_FOUND");
-                        });
+                        .orElseThrow(() -> new NotFoundException(
+                                "STUDENT_NOT_FOUND",
+                                String.format("ActionLog.updateTask.id %d not found", studentId)));
             } else {
                 studentEntity = new StudentEntity(
                         taskDto.getStudent().getName(),
@@ -76,12 +75,11 @@ public class TaskService {
         log.info("ActionLog.updateTask.end taskId {}", taskId);
     }
 
-    public void deleteTask(Long taskId){
+    public void deleteTask(Long taskId) {
         TaskEntity taskEntity = taskRepository.findById(taskId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.deleteStudent.id {} not found", taskId);
-                    return new RuntimeException("TASK_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "TASK_NOT_FOUND",
+                        String.format("ActionLog.deleteTask.id %d not found", taskId)));
         taskRepository.delete(taskEntity);
     }
 }

@@ -4,6 +4,8 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.entity.TaskEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.dao.repository.TaskRepository;
+import com.example.schoolmanagement.exception.NotFoundException;
+import com.example.schoolmanagement.exception.ValidationException;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.model.StudentWithMarkDto;
@@ -36,10 +38,9 @@ public class StudentService {
         log.info("ActionLog.getStudent.start studentId {}", studentId);
         var studentEntity = studentRepository
                 .findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.getStudent.id {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.getStudent.id %d not found", studentId)));
         var studentWithMarkDto = studentMapper.toDto(studentEntity);
         log.info("ActionLog.getStudent.end studentId {}", studentId);
 
@@ -48,6 +49,10 @@ public class StudentService {
 
     public void saveStudent(StudentDto studentDto) {
         log.debug("ActionLog.saveStudent.start student {}", studentDto);
+        if(studentDto.getScore() < 50){
+            throw new ValidationException("AGE_MUST_BE_MORE_THAN_50",
+                    String.format("ActionLog.saveStudent.error student age must be more than 50, this now is %s" + studentDto.getScore()));
+        }
         StudentEntity studentEntity = studentMapper.mapToEntity(studentDto);
         studentEntity.setGraduated(false);
         studentRepository.save(studentEntity);
@@ -56,26 +61,23 @@ public class StudentService {
 
     public void deleteStudent(Long studentId) {
         StudentEntity studentEntity = studentRepository.findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.deleteStudent.id {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.deleteStudent.id %d not found", studentId)));
         studentRepository.delete(studentEntity);
     }
 
     public void deleteTask(Long studentId, Long taskId) {
         log.info("ActionLog.deleteTask.start studentId {}, taskId {}", studentId, taskId);
         StudentEntity studentEntity = studentRepository.findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.deleteTask.studentId {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.deleteTask.id %d not found", studentId)));
 
         TaskEntity taskEntity = taskRepository.findById(taskId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.deleteTask.taskId {} not found", taskId);
-                    return new RuntimeException("TASK_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "TASK_NOT_FOUND",
+                        String.format("ActionLog.deleteTask.id %d not found", taskId)));
 
         if (!taskEntity.getStudent().getId().equals(studentId)) {
             log.error("ActionLog.deleteTask.taskId {} does not belong to studentId {}", taskId, studentId);
@@ -95,10 +97,9 @@ public class StudentService {
         log.info("ActionLog.deleteAllTasks.start studentId {}", studentId);
 
         StudentEntity studentEntity = studentRepository.findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.deleteAllTasks.studentId {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.deleteAllTasks.id %d not found", studentId)));
 
         List<TaskEntity> tasks = studentEntity.getTasks();
 
@@ -114,10 +115,9 @@ public class StudentService {
 
     public void updateStudent(StudentDto studentDto, Long studentId) {
         StudentEntity existingStudent = studentRepository.findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.updateStudent.id {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.updateStudent.id %d not found", studentId)));
 
         StudentEntity updatedStudent = studentMapper.mapToEntity(studentDto);
         existingStudent.setName(updatedStudent.getName());
@@ -131,10 +131,9 @@ public class StudentService {
 
     public void graduatedStudent(Long studentId) {
         StudentEntity studentEntity = studentRepository.findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.graduatedStudent.id {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.graduatedStudent.id %d not found", studentId)));
 
         studentEntity.setGraduated(true);
         studentRepository.save(studentEntity);
@@ -142,16 +141,14 @@ public class StudentService {
 
     public StudentDto assignTask(Long studentId, Long taskId) {
         StudentEntity studentEntity = studentRepository.findById(studentId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.graduatedStudent.id {} not found", studentId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "STUDENT_NOT_FOUND",
+                        String.format("ActionLog.assignTask.id %d not found", studentId)));
 
         TaskEntity taskEntity = taskRepository.findById(taskId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.assingTask.id {} not found", taskId);
-                    return new RuntimeException("TASK_NOT_FOUND");
-                });
+                .orElseThrow(() -> new NotFoundException(
+                        "TASK_NOT_FOUND",
+                        String.format("ActionLog.assignTask.id %d not found", taskId)));
 
         taskEntity.setStudent(studentEntity);
         studentEntity.getTasks().add(taskEntity);
