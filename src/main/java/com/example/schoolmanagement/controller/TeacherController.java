@@ -1,7 +1,9 @@
 package com.example.schoolmanagement.controller;
 
+import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.model.teacher.TeacherDto;
 import com.example.schoolmanagement.service.TeacherService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 public class TeacherController {
 
     private final TeacherService teacherService;
+
+    @Operation(description = "This is controller of teacher. Response is all teachers")
     @GetMapping
     public List<TeacherDto> getAllTeachers() {
         log.info("Action.getAllTeacher.start");

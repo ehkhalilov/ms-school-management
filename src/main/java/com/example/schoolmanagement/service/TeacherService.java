@@ -3,6 +3,7 @@ package com.example.schoolmanagement.service;
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.dao.repository.TeacherRepository;
+import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.maper.TeacherMapper;
 import com.example.schoolmanagement.model.teacher.TeacherDto;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class TeacherService {
     public TeacherDto getTeacher(String teacherID){
         return teacherMapper.mapToDto(
                 teacherRepository.findById(teacherID).
-                        orElseThrow(()-> new RuntimeException("TEACHER_NOT_FOUND"))
+                        orElseThrow(()-> new NotFoundException("TEACHER_NOT_FOUND", "Action.err TEACHER_NOT_FOUND"))
         );
     }
 
