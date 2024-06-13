@@ -20,26 +20,20 @@ public class StudentService {
 
 
     public List<StudentDto> getAllStudents() {
-        log.info("Action.Log.getAllStudents.start");
         List<StudentEntity> studentEntityList = studentRepository.findAll();
-        List<StudentDto> studentDtosList = studentEntityList.stream()
+        return studentEntityList.stream()
                 .map(studentMapper::mapToDto)
                 .toList();
-        log.info("Action.Log.getAllStudents.end");
-        return  studentDtosList;
     }
 
     public StudentDto getStudent(Long customerId) {
-        log.info("Action.Log.getStudent(id-> {}).start" , customerId);
         var studentEntity = studentRepository
                 .findById(customerId)
                 .orElseThrow(() -> {
                     log.error("Action.Log.getStudent couldn't find particular student");
                     return new RuntimeException("STUDENT_NOT_FOUND");
                 });
-        var studentDto = studentMapper.mapToDto(studentEntity);
-        log.info("Action.Log.getStudent(id-> {}).end" , customerId);
-        return studentDto;
+        return studentMapper.mapToDto(studentEntity);
     }
 
     public void saveStudent(StudentDto studentDto) {
@@ -67,8 +61,7 @@ public class StudentService {
 
 
     public List<StudentDto> getGraduatedStudents(){
-        List<StudentDto> list = getAllStudents().stream().filter(StudentDto::getGraduate).collect(Collectors.toList());
-        return list ;
+        return getAllStudents().stream().filter(StudentDto::getGraduate).collect(Collectors.toList());
     }
 
 }

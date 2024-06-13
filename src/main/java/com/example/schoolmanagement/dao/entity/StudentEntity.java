@@ -2,9 +2,9 @@ package com.example.schoolmanagement.dao.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 //test
@@ -31,17 +31,20 @@ public class StudentEntity {
     @JoinColumn(name = "card_id")
     private CardEntity card;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+    private List<TaskEntity> task;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentEntity that = (StudentEntity) o;
-        return graduate == that.graduate && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(score, that.score) && Objects.equals(birthDate, that.birthDate) && Objects.equals(course, that.course) && Objects.equals(card, that.card);
+        return graduate == that.graduate && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(score, that.score) && Objects.equals(birthDate, that.birthDate) && Objects.equals(course, that.course) && Objects.equals(card, that.card) && Objects.equals(task, that.task);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, score, birthDate, course, graduate, card);
+        return Objects.hash(id, name, surname, score, birthDate, course, graduate, card, task);
     }
 }
-

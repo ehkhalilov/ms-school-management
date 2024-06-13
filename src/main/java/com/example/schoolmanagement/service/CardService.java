@@ -3,7 +3,6 @@ package com.example.schoolmanagement.service;
 import com.example.schoolmanagement.dao.repository.CardRepository;
 import com.example.schoolmanagement.maper.CardMapper;
 import com.example.schoolmanagement.model.card.CardDto;
-import com.example.schoolmanagement.model.card.CardWithoutStudentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class CardService {
 
 
     public List<CardDto> getAllCards(){
-        List<CardDto> cardDtos = cardRepository.findAll().stream().map(cardMapper::mapToDto).toList();
-        return cardDtos;
+        return cardRepository.findAll().stream().map(cardMapper::mapToDto).toList();
     }
+
 }
