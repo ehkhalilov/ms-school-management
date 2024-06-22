@@ -1,7 +1,9 @@
 package com.example.schoolmanagement.service;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.dao.entity.TeacherEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
+import com.example.schoolmanagement.dao.repository.TeacherRepository;
 import com.example.schoolmanagement.exceptions.NotFound;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
@@ -16,6 +18,7 @@ import java.util.List;
 @Slf4j
 public class StudentService {
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     private final StudentMapper studentMapper;
 
     public List<StudentDto> getAllStudents() {
@@ -39,6 +42,7 @@ public class StudentService {
     public void saveStudent(StudentDto studentDto) {
         log.info("ActionLog.saveStudent.start student {}", studentDto);
         var studentEntity = studentMapper.mapToEntity(studentDto);
+        System.out.println(studentEntity.getTasks());
         studentRepository.save(studentEntity);
         log.info("ActionLog.saveStudent.end student {}", studentDto);
     }
@@ -70,11 +74,32 @@ public class StudentService {
         log.info("ActionLog.updateStudent.end student {}",customerId);
     }
 
+    public void assignTeacherToStudent(Long studentId,Long teacherId){
+        log.info("ActionLog.assignTeacherToStudent.start student {}, teacher {}",studentId,teacherId);
+
+        StudentEntity studentEntity = findStudent(studentId);
+        TeacherEntity teacherEntity = findTeacher(teacherId);
+
+        List<TeacherEntity> teacherEntities = studentEntity.getTeachers();
+        teacherEntities.add(teacherEntity);
+        studentEntity.setTeachers(teacherEntities);
+        studentRepository.save(studentEntity);
+
+        log.info("ActionLog.assignTeacherToStudent.end student {}, teacher {}",studentId,teacherId);
+    }
+
     private StudentEntity findStudent(Long customerId){
         StudentEntity studentEntity = studentRepository.findById(customerId).
                 orElseThrow(()->new NotFound("STUDENT_NOT_FOUND","Error ActionLog.findStudent student {"+customerId+"}"));
 
         return studentEntity;
+    }
+
+    private TeacherEntity findTeacher(Long teacherId){
+        TeacherEntity teacherEntity = teacherRepository.findById(teacherId).
+                orElseThrow(()->new NotFound("TEACHER_NOT_FOUND","Error ActionLog.findTeacher teacher {"+teacherId+"}"));
+
+        return teacherEntity;
     }
 
 }

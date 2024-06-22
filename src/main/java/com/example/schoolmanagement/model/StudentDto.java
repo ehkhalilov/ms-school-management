@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,6 +23,8 @@ public class StudentDto {
     private Card card;
     @Schema(description = "it's tasks of students, there is one to many relation between them",title = "tasks")
     private List<Task> tasks;
+    @Schema(description = "it's teachers of students, there is many to many relation between them",title = "teachers")
+    private List<TeacherRequestDto> teachers = new ArrayList<>();
 
     @Data
     public static class Card {
