@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class CardService {
     public List<CardDto> getCards() {
         log.info("ActionLog.getCards.start");
         List<CardEntity> cards = cardRepository.findAll();
-        List<CardDto> cardDtoList = cardMapper.mapToDto(cards);
+        List<CardDto> cardDtoList = cards.stream().map(cardMapper::mapToDto).toList();
         log.info("ActionLog.getCards.end");
 
         return cardDtoList;

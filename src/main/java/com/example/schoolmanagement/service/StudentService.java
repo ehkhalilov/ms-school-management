@@ -1,6 +1,8 @@
 package com.example.schoolmanagement.service;
 
+import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
+import com.example.schoolmanagement.exceptions.NotFound;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +29,8 @@ public class StudentService {
     }
 
     public StudentDto getStudent(Long customerId) {
-        log.debug("ActionLog.getStudent.start customerId {}", customerId);
-        var studentEntity = studentRepository
-                .findById(customerId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.getStudent.id {} not found", customerId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+        log.info("ActionLog.getStudent.start customerId {}", customerId);
+        var studentEntity =findStudent(customerId);
         var studentDto = studentMapper.mapToDto(studentEntity);
         log.info("ActionLog.getStudent.end customerId {}", customerId);
         return studentDto;
@@ -46,12 +43,38 @@ public class StudentService {
         log.info("ActionLog.saveStudent.end student {}", studentDto);
     }
 
-    public void deleteStudent(Integer customerId) {
+    public StudentDto deleteStudent(Long customerId) {
+        log.info("ActionLog.deleteStudent.start student {}",customerId);
 
+        StudentEntity studentEntity = findStudent(customerId);
+        StudentDto studentDto = studentMapper.mapToDto(studentEntity);
+        studentRepository.deleteById(customerId);
+
+        log.info("ActionLog.deleteStudent.end student {}",customerId);
+        return studentDto;
     }
 
-    public void updateStudent(StudentDto studentDto, Integer customerId) {
+    public void updateStudent(StudentDto studentDto, Long customerId) {
+        log.info("ActionLog.updateStudent.start student {}",customerId);
+
+        StudentEntity studentEntity = findStudent(customerId);
+
+        if(studentDto.getName()!=null){
+            studentEntity.setName(studentDto.getName());
+        }
+        if(studentDto.getScore()!=null){
+            studentEntity.setScore(studentDto.getScore());
+        }
+
+        studentRepository.save(studentEntity);
+        log.info("ActionLog.updateStudent.end student {}",customerId);
     }
 
+    private StudentEntity findStudent(Long customerId){
+        StudentEntity studentEntity = studentRepository.findById(customerId).
+                orElseThrow(()->new NotFound("STUDENT_NOT_FOUND","Error ActionLog.findStudent student {"+customerId+"}"));
+
+        return studentEntity;
+    }
 
 }
