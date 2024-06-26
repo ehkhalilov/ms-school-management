@@ -3,6 +3,7 @@ package com.example.schoolmanagement.controller;
 import com.example.schoolmanagement.model.StudentDto;
 import com.example.schoolmanagement.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class StudentController {
 
     @Operation(description = "this is for saving student")
     @PostMapping
-    public void saveStudent(@RequestBody StudentDto studentDto) {
+    public void saveStudent(@RequestBody @Valid StudentDto studentDto) {
         studentService.saveStudent(studentDto);
     }
 

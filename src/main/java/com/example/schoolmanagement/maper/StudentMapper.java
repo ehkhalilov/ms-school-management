@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
-    @Mapping(target = "name", expression = "java(studentEntity.getName() + ' ' + studentEntity.getSurname())")
     StudentDto mapToDto(StudentEntity studentEntity);
     
     StudentEntity mapToEntity(StudentDto studentDto);
