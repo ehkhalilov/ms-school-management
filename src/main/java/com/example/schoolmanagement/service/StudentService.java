@@ -1,7 +1,10 @@
 package com.example.schoolmanagement.service;
 
+import com.example.schoolmanagement.dao.entity.LessonEntity;
 import com.example.schoolmanagement.dao.entity.StudentEntity;
+import com.example.schoolmanagement.dao.repository.LessonRepository;
 import com.example.schoolmanagement.dao.repository.StudentRepository;
+import com.example.schoolmanagement.enums.Exceptions;
 import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.mapper.StudentMapper;
 import com.example.schoolmanagement.model.get.StudentGetDto;
@@ -16,8 +19,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StudentService {
+
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final LessonService lessonService;
+    private final LessonRepository lessonRepository;
+
+    public StudentEntity findById(Long id){
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(
+                        Exceptions.STUDENT_NOT_FOUND.name(),
+                        String.format(Exceptions.STUDENT_NOT_FOUND.getLog(), id)
+                ));
+    }
 
     public List<StudentGetDto> getAllStudents(){
         log.info("ActionLog.getAllStudent.start");
@@ -45,9 +59,14 @@ public class StudentService {
     }
 
     public void deleteStudent(Long studentId) throws NotFoundException{
-        log.info("ActionLog.deleteStudent.start");
+        log.info("ActionLog.deleteStudent.start teacherId {}", studentId);
+        StudentEntity studentEntity = findById(studentId);
+        for (LessonEntity lessonEntity : studentEntity.getLessonEntities()){
+            lessonEntity.getStudentEntities().remove(studentEntity);
+            lessonRepository.save(lessonEntity);
+        }
         studentRepository.deleteById(studentId);
-        log.info("ActionLog.getStudent.end studentId {}", studentId);
+        log.info("ActionLog.deleteStudent.end studentId {}", studentId);
     }
 
     public void updateStudent(StudentSetDto studentSetDto, Long studentId) throws NotFoundException{
@@ -66,19 +85,35 @@ public class StudentService {
         log.info("ActionLog.graduate.end studentId {}", studentId);
     }
 
-    public List<StudentGetDto> getAllStudents(Boolean graduate) {
-        log.info("ActionLog.getAllStudents.start graduate {}", graduate);
-        List<StudentEntity> studentEntityList = studentRepository.getStudentsByGraduate(graduate);
-        List<StudentGetDto> studentGetDtos =  studentEntityList.stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-        log.info("ActionLog.getAllStudents.end graduate {}", graduate);
+    public List<StudentGetDto> getStudentsByGraduate(Boolean graduate) {
+        log.info("ActionLog.getStudentsByGraduate.start graduate {}", graduate);
+        List<StudentEntity> studentEntities = studentRepository.getStudentsByGraduate(graduate);
+        List<StudentGetDto> studentGetDtos =  studentMapper.mapToDtos(studentEntities);
+        log.info("ActionLog.getStudentsByGraduate.end graduate {}", graduate);
         return studentGetDtos;
     }
 
-    private StudentEntity findById(Long id){
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("STUDENT_NOT_FOUND"));
+    public void assignLesson(Long studentId, Long lessonId) {
+        log.info("ActionLog.assignLesson.start studentId {}, lessonId {}", studentId, lessonId);
+        StudentEntity studentEntity = findById(studentId);
+        LessonEntity lessonEntity = lessonService.findById(lessonId);
+        if (!studentEntity.getLessonEntities().contains(lessonEntity)) {
+            studentEntity.getLessonEntities().add(lessonEntity);
+            lessonEntity.getStudentEntities().add(studentEntity);
+
+            studentRepository.save(studentEntity);
+            lessonRepository.save(lessonEntity);
+        }
+        log.info("ActionLog.assignLesson.end studentId {}, lessonId {}", studentId, lessonId);
+    }
+
+    public void removeLessonFromStudent(Long studentId, Long lessonId) {
+        log.info("ActionLog.removeLessonFromStudent.start studentId {}, lessonId {}", studentId, lessonId);
+        StudentEntity studentEntity = findById(studentId);
+        LessonEntity lessonEntity = lessonService.findById(lessonId);
+        studentEntity.getLessonEntities().remove(lessonEntity);
+        studentRepository.save(studentEntity);
+        log.info("ActionLog.removeLessonFromStudent.end studentId {}, lessonId {}", studentId, lessonId);
     }
 
 }

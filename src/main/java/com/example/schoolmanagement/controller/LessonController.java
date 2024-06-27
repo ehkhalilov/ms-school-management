@@ -19,17 +19,17 @@ import java.util.List;
 public class LessonController {
     private final LessonService lessonService;
 
-    @PostMapping("/save")
+    @PostMapping
     public void saveTeacher(@RequestBody LessonSetDto lessonSetDto) {
         lessonService.saveLesson(lessonSetDto);
     }
 
-    @GetMapping("/getLesson/{lessonId}")
+    @GetMapping("/{lessonId}")
     public LessonGetDto getTeacher(@PathVariable Long lessonId) {
         return lessonService.getLesson(lessonId);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     public List<LessonGetDto> getTeacher() {
         return lessonService.getAllLessons();
     }

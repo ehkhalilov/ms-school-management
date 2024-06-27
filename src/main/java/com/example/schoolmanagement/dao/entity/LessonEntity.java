@@ -31,4 +31,7 @@ public class LessonEntity {
 
     @ManyToMany(mappedBy = "lessonEntities", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<TeacherEntity> teacherEntities;
+
+    @ManyToMany(mappedBy = "lessonEntities", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<StudentEntity> studentEntities;
 }

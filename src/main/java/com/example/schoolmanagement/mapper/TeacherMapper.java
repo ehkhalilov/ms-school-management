@@ -6,6 +6,8 @@ import com.example.schoolmanagement.model.set.TeacherSetDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public abstract class TeacherMapper {
 
@@ -13,4 +15,6 @@ public abstract class TeacherMapper {
     public abstract TeacherGetDto mapToDto(TeacherEntity teacherEntity);
 
     public abstract TeacherEntity mapToEntity(TeacherSetDto teacherEntity);
+
+    public abstract List<TeacherGetDto> mapToDtos(List<TeacherEntity> teacherEntities);
 }

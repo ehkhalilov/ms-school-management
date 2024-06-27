@@ -1,6 +1,6 @@
 package com.example.schoolmanagement.model.get;
 
-import com.example.schoolmanagement.dao.enums.Score;
+import com.example.schoolmanagement.enums.Score;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PreRemove;
@@ -45,6 +47,14 @@ public class StudentEntity {
 
     @OneToMany(mappedBy = "studentEntity", fetch = FetchType.LAZY)
     private List<TaskEntity> taskEntities;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "students_lessons",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id")
+    )
+    private List<LessonEntity> lessonEntities;
 
     @PreRemove
     private void preRemoveTask() {

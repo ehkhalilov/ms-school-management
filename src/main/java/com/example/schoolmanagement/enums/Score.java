@@ -1,4 +1,4 @@
-package com.example.schoolmanagement.dao.enums;
+package com.example.schoolmanagement.enums;
 
 public enum Score {
     A, B, C, D, E, F;

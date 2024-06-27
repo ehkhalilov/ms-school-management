@@ -16,7 +16,7 @@ public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping("/getAll")
+    @GetMapping
     public List<CardGetDto> getAllCards(){
         return cardService.getAllCards();
     }

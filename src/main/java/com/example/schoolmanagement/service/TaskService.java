@@ -2,8 +2,8 @@ package com.example.schoolmanagement.service;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.entity.TaskEntity;
-import com.example.schoolmanagement.dao.repository.StudentRepository;
 import com.example.schoolmanagement.dao.repository.TaskRepository;
+import com.example.schoolmanagement.enums.Exceptions;
 import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.mapper.TaskMapper;
 import com.example.schoolmanagement.model.get.TaskGetDto;
@@ -22,11 +22,14 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
     private TaskEntity findById(Long id){
         return taskRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("TASK_NOT_FOUND"));
+                .orElseThrow(() -> new NotFoundException(
+                        Exceptions.TASK_NOT_FOUND.name(),
+                        String.format(Exceptions.TASK_NOT_FOUND.getLog(), id)
+                ));
     }
 
     public void crateTask(TaskSetDto taskSetDto){
@@ -38,26 +41,25 @@ public class TaskService {
     }
 
     public TaskGetDto getTask(Long taskId){
-        log.info("ActionLog.getTask.start");
+        log.info("ActionLog.getTask.start taskId {}", taskId);
         TaskEntity taskEntity = findById(taskId);
         TaskGetDto taskGetDto = taskMapper.mapToDto(taskEntity);
-        log.info("ActionLog.getTask.end");
+        log.info("ActionLog.getTask.end taskId {}", taskId);
         return taskGetDto;
     }
 
     public List<TaskGetDto> getAllTasks(){
         log.info("ActionLog.getAllTasks.start");
         List<TaskEntity> taskEntities = taskRepository.findAll();
-        List<TaskGetDto> taskGetDtos = taskEntities.stream().map(taskMapper::mapToDto).toList();
+        List<TaskGetDto> taskGetDtos = taskMapper.mapToDtos(taskEntities);
         log.info("ActionLog.getAllTasks.end");
         return taskGetDtos;
     }
 
     public void assignTask(Long studentId, Long taskId) {
-        log.info("ActionLog.assignTask.start");
+        log.info("ActionLog.assignTask.start studentId {}, taskId {}", studentId, taskId);
         TaskEntity taskEntity = findById(taskId);
-        StudentEntity studentEntity = studentRepository.findById(studentId).
-                orElseThrow(()->new NotFoundException("STUDENT_NOT_FOUND"));
+        StudentEntity studentEntity = studentService.findById(studentId);
         if(taskEntity.getStudentEntity() == studentEntity){
             taskEntity.setStudentEntity(null);
             taskEntity.setAssignedDate(null);
@@ -66,31 +68,32 @@ public class TaskService {
         else {
             taskEntity.setStudentEntity(studentEntity);
             taskEntity.setAssignedDate(LocalDate.now());
-            log.info("ActionLog.assignTask.end");
+            log.info("ActionLog.assignTask.end studentId {}, taskId {}", studentId, taskId);
         }
         taskRepository.save(taskEntity);
     }
 
     public List<TaskGetDto> getTasksByStudentId(Long studentId) {
-        log.info("ActionLog.getTasksByStudentId.start");
+        log.info("ActionLog.getTasksByStudentId.start studentId {}", studentId);
+        studentService.findById(studentId);
         List<TaskEntity> taskEntities = taskRepository.findByStudentId(studentId);
-        List<TaskGetDto> taskGetDtos = taskEntities.stream().map(taskMapper::mapToDto).toList();
-        log.info("ActionLog.getTasksByStudentId.end");
+        List<TaskGetDto> taskGetDtos = taskMapper.mapToDtos(taskEntities);
+        log.info("ActionLog.getTasksByStudentId.end studentId {}", studentId);
         return taskGetDtos;
     }
 
     public void deleteTask(Long taskId) {
-        log.info("ActionLog.deleteTask.start");
+        log.info("ActionLog.deleteTask.start taskId {}", taskId);
         taskRepository.deleteById(taskId);
-        log.info("ActionLog.deleteTask.end");
+        log.info("ActionLog.deleteTask.end taskId {}", taskId);
     }
 
     public void changeDueDate(Long taskId, LocalDate newDate) {
-        log.info("ActionLog.changeDueDate.start");
+        log.info("ActionLog.changeDueDate.start taskId {}, newDate {}", taskId, newDate);
         TaskEntity taskEntity = findById(taskId);
         taskEntity.setDueDate(newDate);
         taskRepository.save(taskEntity);
-        log.info("ActionLog.changeDueDate.end");
+        log.info("ActionLog.changeDueDate.end taskId {}, newDate {}", taskId, newDate);
     }
 
 }

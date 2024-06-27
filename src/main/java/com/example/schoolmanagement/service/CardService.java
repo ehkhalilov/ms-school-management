@@ -20,11 +20,9 @@ public class CardService {
     public List<CardGetDto> getAllCards(){
         log.info("ActionLog.getAllCards.start");
         List<CardEntity> cardEntities = cardRepository.findAll();
-        List<CardGetDto> cardGetDtos = cardEntities.stream().map(cardMapper::mapToDto).toList();
+        List<CardGetDto> cardGetDtos = cardMapper.mapToDtos(cardEntities);
         log.info("ActionLog.getAllCards.end");
         return cardGetDtos;
     }
-
-
 
 }

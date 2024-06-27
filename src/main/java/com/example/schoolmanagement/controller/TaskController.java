@@ -24,36 +24,36 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @PostMapping("/create")
+    @PostMapping
     public void createTask(@RequestBody TaskSetDto taskSetDto){
         taskService.crateTask(taskSetDto);
     }
 
-    @GetMapping("/getTask/{taskId}")
+    @GetMapping("/{taskId}")
     public TaskGetDto getTask(@PathVariable Long taskId){
         return taskService.getTask(taskId);
     }
-    @GetMapping("/getAll")
+    @GetMapping
     public List<TaskGetDto> getAllTasks(){
         return taskService.getAllTasks();
     }
 
-    @PutMapping("/assignTask/{studentId}/{taskId}")
-    public void assignTask(@PathVariable Long studentId, @PathVariable Long taskId){
+    @PutMapping("/{taskId}/students/{studentId}/assign")
+    public void assignTask(@PathVariable Long taskId, @PathVariable Long studentId){
         taskService.assignTask(studentId, taskId);
     }
 
-    @GetMapping("/getTasksOfStudent/{studentId}")
+    @GetMapping("/students/{studentId}")
     public List<TaskGetDto> getTasksByStudentId(@PathVariable Long studentId){
         return taskService.getTasksByStudentId(studentId);
     }
 
-    @DeleteMapping("/delete{taskId}")
+    @DeleteMapping("{taskId}")
     public void deleteTask(@PathVariable Long taskId){
         taskService.deleteTask(taskId);
     }
 
-    @PatchMapping("/changeDueDate/{taskId}/{newDate}")
+    @PatchMapping("/{taskId}/{newDate}")
     public void changeDueDate(@PathVariable Long taskId, @PathVariable LocalDate newDate){
         taskService.changeDueDate(taskId, newDate);
     }

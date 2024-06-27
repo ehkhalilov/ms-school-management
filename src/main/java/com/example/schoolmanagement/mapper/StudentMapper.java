@@ -1,13 +1,15 @@
 package com.example.schoolmanagement.mapper;
 
 import com.example.schoolmanagement.dao.entity.StudentEntity;
-import com.example.schoolmanagement.dao.enums.Score;
+import com.example.schoolmanagement.enums.Score;
 import com.example.schoolmanagement.model.get.CardGetDto;
 import com.example.schoolmanagement.model.get.StudentGetDto;
 import com.example.schoolmanagement.model.set.StudentSetDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 
 @Mapper(componentModel = "spring", imports = {Score.class})
@@ -25,4 +27,6 @@ public abstract class StudentMapper {
             StudentSetDto studentSetDto, @MappingTarget StudentEntity studentEntity);
 
     public abstract CardGetDto.Student mapToStudent(StudentGetDto studentGetDto);
+
+    public abstract List<StudentGetDto> mapToDtos(List<StudentEntity> studentEntities);
 }

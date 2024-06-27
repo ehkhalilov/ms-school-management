@@ -14,4 +14,5 @@ public class LessonGetDto {
     private String name;
     private Long akts;
     private List<TeacherGetDto> teacherGetDtos;
+    private List<StudentGetDto> studentGetDtos;
 }

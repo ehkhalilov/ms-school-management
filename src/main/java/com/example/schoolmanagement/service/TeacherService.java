@@ -4,6 +4,7 @@ import com.example.schoolmanagement.dao.entity.LessonEntity;
 import com.example.schoolmanagement.dao.entity.TeacherEntity;
 import com.example.schoolmanagement.dao.repository.LessonRepository;
 import com.example.schoolmanagement.dao.repository.TeacherRepository;
+import com.example.schoolmanagement.enums.Exceptions;
 import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.mapper.TeacherMapper;
 import com.example.schoolmanagement.model.get.TeacherGetDto;
@@ -22,10 +23,14 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
     private final LessonRepository lessonRepository;
+    private final LessonService lessonService;
 
     private TeacherEntity findById(Long id){
         return teacherRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("TEACHER_NOT_FOUND"));
+                .orElseThrow(() -> new NotFoundException(
+                        Exceptions.TEACHER_NOT_FOUND.name(),
+                        String.format(Exceptions.TEACHER_NOT_FOUND.getLog(), id)
+                ));
     }
 
     public void saveTeacher(TeacherSetDto teacherSetDto){
@@ -38,24 +43,23 @@ public class TeacherService {
     public List<TeacherGetDto> getAllTeachers(){
         log.info("ActionLog.getAllTeachers.start");
         List<TeacherEntity> teacherEntities = teacherRepository.findAll();
-        List<TeacherGetDto> teacherGetDtos = teacherEntities.stream().map(teacherMapper::mapToDto).toList();
+        List<TeacherGetDto> teacherGetDtos = teacherMapper.mapToDtos(teacherEntities);
         log.info("ActionLog.getAllTeachers.end");
         return teacherGetDtos;
     }
 
     public TeacherGetDto getTeacher(Long teacherId){
-        log.info("ActionLog.getTeacher.start");
+        log.info("ActionLog.getTeacher.start teacherId {}", teacherId);
         TeacherEntity teacherEntity = findById(teacherId);
         TeacherGetDto teacherGetDto = teacherMapper.mapToDto(teacherEntity);
-        log.info("ActionLog.getTeacher.end");
+        log.info("ActionLog.getTeacher.end teacherId {}", teacherId);
         return teacherGetDto;
     }
 
     public void assignLesson(Long teacherId, Long lessonId) {
-        log.info("ActionLog.assignLesson.start");
+        log.info("ActionLog.assignLesson.start teacherId {}, lessonId {}", teacherId, lessonId);
         TeacherEntity teacherEntity = findById(teacherId);
-        LessonEntity lessonEntity = lessonRepository.findById(lessonId)
-                .orElseThrow(() -> new NotFoundException("LESSON_NOT_FOUND"));
+        LessonEntity lessonEntity = lessonService.findById(lessonId);
         if (!teacherEntity.getLessonEntities().contains(lessonEntity)) {
             teacherEntity.getLessonEntities().add(lessonEntity);
             lessonEntity.getTeacherEntities().add(teacherEntity);
@@ -63,17 +67,27 @@ public class TeacherService {
             teacherRepository.save(teacherEntity);
             lessonRepository.save(lessonEntity);
         }
-        log.info("ActionLog.assignLesson.end");
+        log.info("ActionLog.assignLesson.end teacherId {}, lessonId {}", teacherId, lessonId);
     }
 
     public void deleteTeacher(Long teacherId){
-        log.info("ActionLog.deleteTeacher.start");
+        log.info("ActionLog.deleteTeacher.start teacherId {}", teacherId);
         TeacherEntity teacherEntity = findById(teacherId);
         for (LessonEntity lessonEntity : teacherEntity.getLessonEntities()){
             lessonEntity.getTeacherEntities().remove(teacherEntity);
             lessonRepository.save(lessonEntity);
         }
         teacherRepository.deleteById(teacherId);
-        log.info("ActionLog.deleteTeacher.end");
+        log.info("ActionLog.deleteTeacher.end teacherId {}", teacherId);
     }
+
+    public void removeLessonFromTeacher(Long teacherId, Long lessonId) {
+        log.info("ActionLog.removeLessonFromTeacher.start teacherId {}, lessonId {}", teacherId, lessonId);
+        TeacherEntity teacherEntity = findById(teacherId);
+        LessonEntity lessonEntity = lessonService.findById(lessonId);
+        teacherEntity.getLessonEntities().remove(lessonEntity);
+        teacherRepository.save(teacherEntity);
+        log.info("ActionLog.removeLessonFromTeacher.end teacherId {}, lessonId {}", teacherId, lessonId);
+    }
+
 }

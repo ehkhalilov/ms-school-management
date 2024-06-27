@@ -6,10 +6,14 @@ import com.example.schoolmanagement.model.set.TaskSetDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {StudentMapper.class})
 public abstract class TaskMapper {
     @Mapping(target = "studentGetDto", source = "studentEntity")
     public abstract TaskGetDto mapToDto(TaskEntity taskEntity);
 
     public abstract TaskEntity mapToEntity(TaskSetDto taskSetDto);
+
+    public abstract List<TaskGetDto> mapToDtos(List<TaskEntity> taskEntities);
 }
