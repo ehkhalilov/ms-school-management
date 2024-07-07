@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.model;
 
+import com.example.schoolmanagement.validations.MailCheck;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,10 @@ public class StudentDto {
     @Schema(description = "it's unique id",title = "id")
     private Long id;
     @Schema(description = "it's name",title = "name",defaultValue = "name")
-    @NotNull
+    @MailCheck
     private String name;
     @Schema(description = "it's score",title = "score")
+    @NotNull
     private Double score;
     @Schema(description = "it's card of student, there is one to one relation between them",title = "card")
     private Card card;

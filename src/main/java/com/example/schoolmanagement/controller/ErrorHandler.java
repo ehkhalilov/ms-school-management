@@ -17,6 +17,11 @@ import java.util.Map;
 @Slf4j
 public class ErrorHandler {
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleValidationExceptions(Exception e) {
+        e.printStackTrace();
+    }
     @ExceptionHandler(NotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDto handler(NotFound e){
