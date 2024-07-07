@@ -88,7 +88,7 @@ public class StudentService {
         log.info("ActionLog.assignTeacherToStudent.end student {}, teacher {}",studentId,teacherId);
     }
 
-    private StudentEntity findStudent(Long customerId){
+    public StudentEntity findStudent(Long customerId){
         StudentEntity studentEntity = studentRepository.findById(customerId).
                 orElseThrow(()->new NotFound("STUDENT_NOT_FOUND","Error ActionLog.findStudent student {"+customerId+"}"));
 
