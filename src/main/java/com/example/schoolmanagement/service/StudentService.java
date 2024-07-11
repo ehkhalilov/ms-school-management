@@ -1,6 +1,8 @@
 package com.example.schoolmanagement.service;
 
 import com.example.schoolmanagement.dao.repository.StudentRepository;
+import com.example.schoolmanagement.exception.NotFoundException;
+import com.example.schoolmanagement.exception.ValidationException;
 import com.example.schoolmanagement.maper.StudentMapper;
 import com.example.schoolmanagement.model.StudentDto;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.example.schoolmanagement.enums.Exceptions.STUDENT_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -26,28 +30,38 @@ public class StudentService {
         return studentDtos;
     }
 
-    public StudentDto getStudent(Long customerId) {
-        log.debug("ActionLog.getStudent.start customerId {}", customerId);
+    public StudentDto getStudent(Long studentId) {
+        log.debug("ActionLog.getStudent.start studentId {}", studentId);
         var studentEntity = studentRepository
-                .findById(customerId)
-                .orElseThrow(() -> {
-                    log.error("ActionLog.getStudent.id {} not found", customerId);
-                    return new RuntimeException("STUDENT_NOT_FOUND");
-                });
+                .findById(studentId)
+                .orElseThrow(() -> new NotFoundException(
+                        STUDENT_NOT_FOUND.name(),
+                        String.format(STUDENT_NOT_FOUND.getMessage(), studentId)
+                ));
         var studentDto = studentMapper.mapToDto(studentEntity);
-        log.info("ActionLog.getStudent.end customerId {}", customerId);
+        log.info("ActionLog.getStudent.end customerId {}", studentId);
         return studentDto;
     }
 
     public void saveStudent(StudentDto studentDto) {
         log.info("ActionLog.saveStudent.start student {}", studentDto);
+        if (studentDto.getScore() < 50) {
+            throw new ValidationException("AGE_MUST_BE_MORE_THAN_50",
+                    String.format("ActionLog.saveStudent.error student age must be more than 50 bu now is %s ",
+                            studentDto.getScore()));
+        }
         var studentEntity = studentMapper.mapToEntity(studentDto);
         studentRepository.save(studentEntity);
         log.info("ActionLog.saveStudent.end student {}", studentDto);
     }
 
-    public void deleteStudent(Integer customerId) {
-
+    public void deleteStudent(Integer studentId) {
+        var teacherId = 1L;
+        var student = studentRepository.findById(studentId).orElseThrow();
+        var teachers = student.getTeachers();
+        teachers.removeIf(it -> it.getId() == teacherId);
+        student.setTeachers(teachers);
+        studentRepository.save(student);
     }
 
     public void updateStudent(StudentDto studentDto, Integer customerId) {

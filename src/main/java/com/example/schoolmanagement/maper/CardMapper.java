@@ -8,6 +8,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CardMapper {
-
     List<CardDto> mapToDto(List<CardEntity> card);
 }
