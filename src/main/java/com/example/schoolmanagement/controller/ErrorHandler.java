@@ -35,9 +35,9 @@ public class ErrorHandler {
     public ExceptionGetDto handle(MethodArgumentNotValidException e){
         e.getBindingResult().getAllErrors().forEach(error -> {
             if (error instanceof FieldError fieldError) {
-                log.error("Validation failed for field: {} - {}", fieldError.getField(), fieldError.getDefaultMessage());
+                log.error("AgeLimitValidator failed for field: {} - {}", fieldError.getField(), fieldError.getDefaultMessage());
             } else {
-                log.error("Validation error: {}", error.getDefaultMessage());
+                log.error("AgeLimitValidator error: {}", error.getDefaultMessage());
             }
         });
         return new ExceptionGetDto("VALIDATION_FAILED");

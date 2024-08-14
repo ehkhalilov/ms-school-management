@@ -30,9 +30,8 @@ dependencies {
     //mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-
-
-
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.3.2'
 }
 
 tasks.named('test') {

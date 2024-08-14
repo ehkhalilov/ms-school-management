@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.dao.entity;
 
+import com.example.schoolmanagement.enums.TaskStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,6 +31,7 @@ public class TaskEntity {
     private Long id;
     private String title;
     private String description;
+    private TaskStatus status;
     private LocalDate createDate;
     private LocalDate assignedDate;
     private LocalDate dueDate;

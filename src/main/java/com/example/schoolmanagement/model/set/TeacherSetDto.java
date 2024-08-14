@@ -1,5 +1,6 @@
 package com.example.schoolmanagement.model.set;
 
+import com.example.schoolmanagement.annotation.AgeLimit;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class TeacherSetDto {
     private String name;
     @NotNull(message = "Surname cannot be null")
     private String surname;
+    @AgeLimit
     private LocalDate birthDate;
 }

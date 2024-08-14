@@ -4,6 +4,7 @@ import com.example.schoolmanagement.dao.entity.StudentEntity;
 import com.example.schoolmanagement.dao.entity.TaskEntity;
 import com.example.schoolmanagement.dao.repository.TaskRepository;
 import com.example.schoolmanagement.enums.Exceptions;
+import com.example.schoolmanagement.enums.TaskStatus;
 import com.example.schoolmanagement.exception.NotFoundException;
 import com.example.schoolmanagement.mapper.TaskMapper;
 import com.example.schoolmanagement.model.get.TaskGetDto;
@@ -36,6 +37,7 @@ public class TaskService {
         log.info("ActionLog.crateTask.start");
         TaskEntity taskEntity = taskMapper.mapToEntity(taskSetDto);
         taskEntity.setCreateDate(LocalDate.now());
+        taskEntity.setStatus(TaskStatus.CREATED);
         taskRepository.save(taskEntity);
         log.info("ActionLog.crateTask.end");
     }
@@ -68,6 +70,7 @@ public class TaskService {
         else {
             taskEntity.setStudentEntity(studentEntity);
             taskEntity.setAssignedDate(LocalDate.now());
+            taskEntity.setStatus(TaskStatus.ASSIGNED);
             log.info("ActionLog.assignTask.end studentId {}, taskId {}", studentId, taskId);
         }
         taskRepository.save(taskEntity);
@@ -92,6 +95,7 @@ public class TaskService {
         log.info("ActionLog.changeDueDate.start taskId {}, newDate {}", taskId, newDate);
         TaskEntity taskEntity = findById(taskId);
         taskEntity.setDueDate(newDate);
+        taskEntity.setStatus(TaskStatus.IN_PROGRESS);
         taskRepository.save(taskEntity);
         log.info("ActionLog.changeDueDate.end taskId {}, newDate {}", taskId, newDate);
     }
